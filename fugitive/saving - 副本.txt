@@ -1,0 +1,91 @@
+difficulty:0 	(easy)
+complete chap:0
+atk stage number:4
+player name:Äã
+player speed:50
+player radium:20
+player life:250
+player life recover per second:20
+player attack:1500
+player attack range:30
+player def:60
+act interval:0
+attack interval:4
+player long distance attack range:600
+player long distance attack speed:20
+attack pattern:4
+pattern 1:0 60 0 0 8
+pattern 2:1 120 0 0 8
+pattern 3:2 0 10 4 6
+pattern 4:3 10 20 1 16
+weapon:1 100 0 0 0 0 0 0 0 0 0 0  (sword bow&arrow shell)
+weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+atk stage end:10000
+
+player name:Äã
+player speed:6
+player radium:20
+player life:250
+player life recover per second:2
+player attack:20
+player attack range:40
+player def:7
+act interval:0
+attack interval:3
+player long distance attack range:600
+player long distance attack speed:40
+attack pattern:4
+pattern 1:0 60 0 3 7
+pattern 2:1 120 10 4 7
+pattern 3:2 0 10 10 5
+pattern 4:3 10 20 2 15
+weapon:1 30 0 0 0 0 0 0 0 0 0 0  (sword bow&arrow shell)
+weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+atk stage end:30000
+
+player name:Äã
+player speed:7
+player radium:20
+player life:250
+player life recover per second:3
+player attack:25
+player attack range:40
+player def:10
+act interval:0
+attack interval:2
+player long distance attack range:600
+player long distance attack speed:40
+attack pattern:4
+pattern 1:0 60 5 5 6
+pattern 2:1 120 10 5 6
+pattern 3:2 0 20 10 4
+pattern 4:3 20 20 2 14
+weapon:1 50 0 0 0 0 0 0 0 0 0 0  (sword bow&arrow shell)
+weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+atk stage end:80000
+
+player name:Äã
+player speed:15
+player radium:20
+player life:250
+player life recover per second:4
+player attack:35
+player attack range:40
+player def:15
+act interval:0
+attack interval:1
+player long distance attack range:600
+player long distance attack speed:40
+attack pattern:5
+pattern 1:0 60 16 5 4
+pattern 2:1 120 30 5 4
+pattern 3:2 10 20 10 3
+pattern 4:2 10 30 10 4
+pattern 5:3 30 50 6 12
+weapon:1 10 0 0 0 0 0 0 0 0 0 0  (sword bow&arrow shell)
+weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+atk stage end:81000

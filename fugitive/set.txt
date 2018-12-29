@@ -1,0 +1,3001 @@
+actions_interval:33 ms
+width:1200
+height:500
+add height:150
+
+instructions about action mode 
+0 (x,y) protect point(x,y) if enemy approach atk
+1 	disappear
+2 	attack people if enemy approach atk
+3 (x,y)	attack point(x,y) if enemy approach ignore
+4 (x,y) attack point(x,y) if enemy approach 
+5	blank
+6 	attack all
+7	follow someone
+8 (x1,y1) (x2,y2) ... certain route
+instructions about short distance attack patterns
+0 angle x y fn   clockwise attack over angle with x more range and y more attack
+1 angle x y fn  counterclockwise attack
+2 dis x y fn	arush stab with x more range and y more attack
+3 dis x y fn     360 degree attack,make enermy back by dis
+fn is frame number
+instructions about building mode
+1 stronghold at player side  a stronghold has 4 gate 
+2 stronghold at enemy side
+instructions about stage mode(all stage mode should be complished,it's evaluated every second)
+0 n pi xi yi ri      		one of pi arrive in ri around (xi,yi)
+1 n x1 x2 ... xn    		one of x1-xn is defeated
+2 n x1 y1 x2 y2 ... xn yn  	one of building xi'mode is yi
+3 x 				after x seconds from begin stage on
+4 n x1 x2 ... xn T      	one of x1...xn alive if all dead to stage T
+5 n x1 y1 x2 y2 ... xn yn T	one of bd[x[i]].mode==yi if all not to stage T 
+6 				lose at this chapter
+7				win at this chapter
+Event code
+Eventcondition p x y r
+code 0:people[p]life in (x,y)
+code 1:p arrive in circle(x,y,r)
+code 2:building p is mode x
+code 3:p q in r distance
+Eventcode 
+0:item code x y wpr wpma wpmr 
+1:item code people wpr wpma wpmr  occur at people's postition
+2:a person x y ch
+3:A B ch                          A appear at B's pos
+4:massage
+5:mark
+6:people life turn to
+7:building i turn to mode x
+
+Chapter 1
+map_width:6400
+map_height:6400
+
+player
+initial_pos_x:1900
+initial_pos_y:2600
+
+building number:31
+
+bonus
+
+building 1 palace
+name:毛鑫宫
+(up,left)-(down,right):(1500,1500)-(2500,2500)
+mode:1(has four entrances and in friend)
+door strength:1000 1000 1000 1000 (up left down right)
+RGB(217,217,25)
+
+building 2 enemy stronghold
+name:西北据点
+(up,left)-(down,right):(100,100)-(300,300)
+mode:2(has four entrances and in enemy)
+door strength:800 800 800 800
+RGB(64,64,64)
+
+building 3 enemy stronghold
+name:西南据点
+(up,left)-(down,right):(3700,100)-(3900,300)
+mode:2
+door strength:800 800 800 800
+RGB(64,64,64)
+
+building 4 enemy stronghold
+name:东南据点
+(up,left)-(down,right):(3700,3700)-(3900,3900)
+mode:2
+door strength:800 800 800 800
+RGB(64,64,64)
+
+building 5 enemy stronghold
+name:东北据点
+(up,left)-(down,right):(100,3700)-(300,3900)
+mode:2
+door strength:100 800 800 800
+RGB(64,64,64)
+6
+name:房子
+pos:(847,1305)-(1149,1737)
+mode:3
+RGB(128,128,128)
+7
+name:房子
+pos:(798,687)-(1234,1142)
+mode:3
+RGB(128,128,128)
+8
+name:房子
+pos:(1234,523)-(2574,937)
+mode:3
+RGB(128,128,128)
+9
+name:房子
+pos:(632,2125)-(942,2590)
+mode:3
+RGB(128,128,128)
+10
+name:房子
+pos:(2300,3000)-(2600,3300)
+mode:3
+RGB(128,128,128)
+11
+name:房子
+pos:(1800,2700)-(2200,3100)
+mode:3
+RGB(128,128,128)
+12
+fuck:北城门
+fuck:(300,1800)-(400,2200)
+fuck:2
+door strength:100 0 100 0
+RGB(64,64,64)
+13
+fuck:南城门
+fuck:(3600,1800)-(3700,2200)
+fuck:2
+door strength:100 0 100 0
+RGB(64,64,64)
+14
+fuck:西城门
+fuck:(1800,300)-(2200,400)
+fuck:2
+door strength:0 100 0 100
+RGB(64,64,64)
+15
+fuck:东城门
+fuck:(1800,3600)-(2200,3700)
+fuck:2
+door strength:0 100 0 100
+RGB(64,64,64)
+name:城墙
+(up,left)-(down,right):(400,300)-(1800,400)
+mode:3
+RGB(64,64,64)
+
+name:城墙
+(up,left)-(down,right):(300,2200)-(400,3700)
+mode:3
+RGB(64,64,64)
+
+name:城墙
+..:(400,3600)-(1800,3700)
+mode:3
+RGB(64,64,64)
+
+fuck:城墙
+fuck:(2200,300)-(3700,400)
+fuck:3
+RGB(64,64,64)
+
+fuck:城墙
+fuck:(3600,400)-(3700,1800)
+fuck:3
+RGB(64,64,64)
+
+fuck:城墙
+fuck:(3600,2200)-(3700,3700)
+fuck:3
+RGB(64,64,64)
+
+fuck:城墙
+fuck:(2200,3600)-(3600,3700)
+fuck:3
+RGB(64,64,64)
+
+name:城墙
+(up,left)-(down,right):(300,300)-(400,1800)
+mode:3
+RGB(64,64,64)
+
+name:城内据点
+(up,left)-(down,right):(400,400)-(500,500)
+mode:2
+door strength:0 0 200 200 (up left down right)
+RGB(64,64,64)
+
+name:城内据点
+(up,left)-(down,right):(3500,3500)-(3600,3600)
+mode:2
+door strength:200 200 0 0 (up left down right)
+RGB(64,64,64)
+
+name:大本营
+(up,left)-(down,right):(5000,5000)-(5500,5500)
+mode:2
+door strength:1250 1250 1250 1250 (up left down right)
+RGB(150,150,150)
+
+name:?
+(up,left)-(down,right):(50,5200)-(90,5240)
+mode:3
+RGB(150,150,150)
+
+name:某关
+uldr:(1,5700)-(5300,5800)
+mode:3
+RGB(150,150,150)
+
+name:某关
+uldr:(5900,5700)-(6399,5800)
+mode:3
+RGB(150,150,150)
+
+name:通道
+uldr:(5300,5700)-(5900,5800)
+mode:2
+door:0 400 0 1800
+RGB(150,150,150)
+
+name:郊外
+uldr:(6200,2100)-(6399,2300)
+mode:3
+RGB(255,255,255)
+
+stage number:5
+Stage 1
+
+message number:2
+守住宫殿
+四台门全破算输
+
+mark:1
+2000 2000
+
+friend number:8
+friend 1
+  name:远
+  initial_pos_x:2100
+  initial_pos_y:2600
+  action mode number:4
+  action mode:7 follow:0 stage:1-3
+  action mode:0 (2000,2550) stage:1-3
+  action mode:1 stage:4-4
+  action mode:2 attack:4 enemy:37 36 35 34 stage:3-3
+  speed:5
+  radius:20
+  life:250
+  life recover speed:2
+  attack:20
+  attack range:40
+  def:6
+  act interval:5
+  attack interval:10
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 30 3 6
+  pattern 4:2 10 70 4 6
+  pattern 5:3 30 30 5 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+friend 2
+  name:赖
+  initial_pos_x:2000
+  initial_pos_y:1400
+  action mode number:3
+  action mode:0 (2000,1450) stage:1-3
+  action mode:2 attack:4 enemy:37 36 35 34 stage:3-3
+  action mode:7 follow:0 stage:4-5
+  speed:5
+  radius:30
+  life:250
+  life recover speed:2
+  attack:20
+  attack range:50
+  def:6
+  act interval:5
+  attack interval:0
+  long distance attack range:300
+  long distance attack speed:7
+  attack pattern:8
+  pattern 1:0 60 0 0 3
+  pattern 2:1 10 10 0 3
+  pattern 3:3 10 20 0 16
+  pattern 4:3 10 30 1 14
+  pattern 5:3 10 40 2 12
+  pattern 6:3 15 50 3 10
+  pattern 7:3 20 60 4 8
+  pattern 8:3 30 30 5 6
+  weapon_amount:1 10 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+friend 3
+  name:连
+  initial_pos_x:1400
+  initial_pos_y:2000
+  action mode number:3
+  action mode:0 (1450,2000) stage:1-3
+  action mode:2 attack:4 enemy:37 36 35 34 stage:3-3
+  action mode:7 follow:0 stage:4-5
+  speed:5
+  radius:20
+  life:250
+  life recover speed:2
+  attack:35
+  attack range:40
+  def:6
+  act interval:5
+  attack interval:10
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+friend 4
+  name:能
+  initial_pos_x:2600
+  initial_pos_y:2000
+  action mode number:3
+  action mode:0 (2550,2000) stage:1-3
+  action mode:2 attack:4 enemy:37 36 35 34 stage:3-3
+  action mode:7 follow:0 stage:4-5
+  speed:5
+  radius:20
+  life:250
+  life recover speed:2
+  attack:35
+  attack range:40
+  def:6
+  act interval:5
+  attack interval:10
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+friend 5
+  name:坎
+  initial_pos_x:1600
+  initial_pos_y:1600
+  action mode number:2
+  action mode:0 (1600,1600) stage:1-5
+  action mode:2 attack:4 enemy:37 36 35 34 stage:3-3
+  speed:5
+  radius:20
+  life:250
+  life recover speed:2
+  attack:20
+  attack range:40
+  def:6
+  act interval:4
+  attack interval:4
+  long distance attack range:600
+  long distance attack speed:10
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+friend 6
+  name:舒
+  initial_pos_x:2400
+  initial_pos_y:2400
+  action mode number:2
+  action mode:0 (2400,2400) stage:1-5
+  action mode:2 attack:4 enemy:37 36 35 34 stage:3-3
+  speed:5
+  radius:20
+  life:250
+  life recover speed:2
+  attack:20
+  attack range:40
+  def:6
+  act interval:4
+  attack interval:4
+  long distance attack range:600
+  long distance attack speed:10
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+ 
+friend 7
+  name:任
+  initial_pos_x:1600
+  initial_pos_y:2400
+  action mode number:2
+  action mode:0 (1600,2400) stage:1-5
+  action mode:2 attack:4 enemy:37 36 35 34 stage:3-3
+  speed:5
+  radius:20
+  life:250
+  life recover speed:2
+  attack:20
+  attack range:40
+  def:6
+  act interval:4
+  attack interval:4
+  long distance attack range:600
+  long distance attack speed:10
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+friend 8
+  name:洪
+  initial_pos_x:2400
+  initial_pos_y:1600
+  action mode number:2
+  action mode:0 (2400,1600) stage:1-5
+  action mode:2 attack:4 enemy:37 36 35 34 stage:3-3
+  speed:5
+  radius:20
+  life:250
+  life recover speed:2
+  attack:20
+  attack range:40
+  def:6
+  act interval:4
+  attack interval:4
+  long distance attack range:600
+  long distance attack speed:10
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy number:8
+enemy 9
+  name:啊
+  initial_pos_x:2100
+  initial_pos_y:3750
+  action mode number:10
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:2 attack:8 friend:1 2 3 4 8 7 6 5 0 stage:1-5
+  action mode:3 attack the gate (2000,2500) of building 1 stage:1-5
+  speed:5
+  radius:20
+  life:150
+  life recover speed:2
+  attack:15
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 10
+  name:poi
+  initial_pos_x:1900
+  initial_pos_y:3750
+  action mode number:10
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (2000,2500)of building 1  stage:1-5
+  action mode:2 attack:5 friend:2 4 3 1 0 stage:1-5
+  speed:5
+  radius:20
+  life:150
+  life recover speed:2
+  attack:15
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 11
+  name:啊
+  initial_pos_x:3750
+  initial_pos_y:2100
+  action mode number:10
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (2500,2000)of building 1  stage:1-5
+  action mode:2 attack:5 friend:3 1 2 4 0 stage:1-5
+  speed:5
+  radius:20
+  life:150
+  life recover speed:2
+  attack:15
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 12
+  name:poi
+  initial_pos_x:3750
+  initial_pos_y:1900  action mode number:10
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (2500,2000) of building 1 stage:1-5
+  action mode:2 attack:8 friend:1 2 3 4 8 7 6 5 0 stage:1-5
+  speed:5
+  radius:20
+  life:150
+  life recover speed:2
+  attack:15
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 13
+  name:啊
+  initial_pos_x:1900
+  initial_pos_y:250
+  action mode number:10
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:2 attack:5 friend:4 2 1 3 0 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  speed:5
+  radius:20
+  life:150
+  life recover speed:2
+  attack:15
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 14
+  name:poi
+  initial_pos_x:2100
+  initial_pos_y:250
+  action mode number:10
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  action mode:2 attack:8 friend:1 2 3 4 8 7 6 5 0 stage:1-5
+  speed:5
+  radius:20
+  life:150
+  life recover speed:2
+  attack:15
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 15
+  name:啊
+  initial_pos_x:250
+  initial_pos_y:1900
+  action mode number:10
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:2 attack:8 friend:1 2 3 4 8 7 6 5 0 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  speed:5
+  radius:20
+  life:150
+  life recover speed:2
+  attack:15
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 16
+  name:poi
+  initial_pos_x:250
+  initial_pos_y:2100
+  action mode number:10
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  action mode:2 attack:8 friend:1 2 3 4 8 7 6 5 0 stage:1-5
+  speed:5
+  radius:20
+  life:150
+  life recover speed:2
+  attack:15
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+friend small soldier:2/1 persecond at every stronghold at most:24
+  name:0
+  initial_pos_x:0
+  initial_pos_y:0
+  action mode number:0
+  speed:5
+  radius:10
+  life:30
+  life recover speed:1
+  attack:5
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:3
+  pattern 1:0 40 0 0 8
+  pattern 2:1 60 0 0 8
+  pattern 3:2 10 10 1 6
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+eny small soldier:1/4 persecond at every stronghold at most:40
+  name:0
+  initial_pos_x:0
+  initial_pos_y:0
+  action mode number:0
+  speed:5
+  radius:10
+  life:30
+  life recover speed:1
+  attack:5
+  attack range:40
+  def:6
+  act interval:30
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:3
+  pattern 1:0 40 0 8
+  pattern 2:1 60 0 8 
+  pattern 3:2 10 10 6
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+stage mode:6
+  1 1 10 
+  1 1 12
+  1 1 14
+  1 1 16
+  5 1 1 1
+  4 1 0
+
+stage 2
+message number:1
+南城门出现大炮!
+mark:1
+2000 3800
+
+friend number:0
+
+enemy number:9
+enemy 17
+  name:啊
+  initial_pos_x:2100
+  initial_pos_y:3750
+  action mode number:10
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:2 attack:8 friend:1 2 3 4 8 7 6 5 0 stage:1-5
+  action mode:3 attack the gate (2000,2500) of building 1 stage:1-5
+  speed:5
+  radius:20
+  life:250
+  life recover speed:3
+  attack:15
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 18
+  name:poi
+  initial_pos_x:1900
+  initial_pos_y:3750
+  action mode number:10
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (2000,2500)of building 1  stage:1-5
+  action mode:2 attack:8 friend:1 2 3 4 8 7 6 5 0 stage:1-5
+  speed:5
+  radius:20
+  life:150
+  life recover speed:2
+  attack:15
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 19
+  name:啊
+  initial_pos_x:3750
+  initial_pos_y:2100
+  action mode number:10
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:2 attack:8 friend:1 2 3 4 8 7 6 5 0 stage:1-5
+  action mode:3 attack the gate (2500,2000)of building 1  stage:1-5
+  speed:5
+  radius:20
+  life:150
+  life recover speed:2
+  attack:15
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 20
+  name:poi
+  initial_pos_x:3750
+  initial_pos_y:1900
+  action mode number:10
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (2500,2000) of building 1 stage:1-5
+  action mode:2 attack:8 friend:1 2 3 4 8 7 6 5 0 stage:1-5
+  speed:5
+  radius:20
+  life:150
+  life recover speed:2
+  attack:15
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 21
+  name:啊
+  initial_pos_x:1900
+  initial_pos_y:250
+  action mode number:10
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:2 attack:8 friend:1 2 3 4 8 7 6 5 0 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  speed:5
+  radius:20
+  life:150
+  life recover speed:2
+  attack:15
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 22
+  name:poi
+  initial_pos_x:2100
+  initial_pos_y:250
+  action mode number:10
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  action mode:2 attack:8 friend:1 2 3 4 8 7 6 5 0 stage:1-5
+  speed:5
+  radius:20
+  life:150
+  life recover speed:2
+  attack:15
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 23
+  name:啊
+  initial_pos_x:250
+  initial_pos_y:1900
+  action mode number:10
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:2 attack:8 friend:1 2 3 4 8 7 6 5 0 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  speed:5
+  radius:20
+  life:150
+  life recover speed:2
+  attack:15
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 24
+  name:poi
+  initial_pos_x:250
+  initial_pos_y:2100
+  action mode number:10
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  action mode:2 attack:8 friend:1 2 3 4 8 7 6 5 0 stage:1-5
+  speed:5
+  radius:20
+  life:150
+  life recover speed:2
+  attack:15
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 25
+  name:炮
+  initial_pos_x:2000
+  initial_pos_y:3800
+  action mode number:13
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (2000,2500) of building 1 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  action mode:2 attack:9 friend:1 2 3 4 0 8 7 6 5 stage:1-5
+  speed:2
+  radius:80
+  life:800
+  life recover speed:2
+  attack:150
+  attack range:10
+  def:6
+  act interval:6
+  attack interval:50
+  long distance attack range:1000
+  long distance attack speed:20
+  attack pattern:1
+  pattern 1:0 120 0 0
+  weapon_amount:0 0 100000 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+friend small soldier:2/1 persecond at every stronghold at most:30
+  name:o
+  initial_pos_x:0
+  initial_pos_y:0
+  action mode number:0
+  speed:5
+  radius:10
+  life:50
+  life recover speed:1
+  attack:5
+  attack range:40
+  def:3
+  act interval:6
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:3
+  pattern 1:0 10 0 0 8
+  pattern 2:1 10 0 0 8
+  pattern 3:2 10 10 1 6
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+eny small soldier:1/2 persecond at every stronghold at most:80
+  name:o
+  initial_pos_x:0
+  initial_pos_y:0
+  action mode number:0
+  speed:5
+  radius:10
+  life:50
+  life recover speed:1
+  attack:5
+  attack range:40
+  def:3
+  act interval:30
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:3
+  pattern 1:0 10 0 0 8
+  pattern 2:1 10 0 0 8
+  pattern 3:2 10 10 1 6
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+stage mode:7
+  1 1 18
+  1 1 20
+  1 1 22
+  1 1 24
+  1 1 25
+  5 1 1 1
+  4 1 0
+
+stage 3
+message number:1
+四侧城门都出现大炮!
+mark:4
+2000 200
+2000 3800
+200 2000
+3800 2000
+
+friend number:0
+
+enemy number:12
+enemy 26
+  name:啊
+  initial_pos_x:2100
+  initial_pos_y:3800
+  action mode number:10
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:2 attack:8 friend:1 2 3 4 8 7 6 5 0 stage:1-5
+  action mode:3 attack the gate (2000,2500) of building 1 stage:1-5
+  speed:5
+  radius:20
+  life:250
+  life recover speed:2
+  attack:15
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:10
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 27
+  name:poi
+  initial_pos_x:1900
+  initial_pos_y:3800
+  action mode number:10
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (2000,2500)of building 1  stage:1-5
+  action mode:2 attack:8 friend:1 2 3 4 8 7 6 5 0 stage:1-5
+  speed:5
+  radius:20
+  life:250
+  life recover speed:2
+  attack:15
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:10
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 28
+  name:啊
+  initial_pos_x:3800
+  initial_pos_y:2100
+  action mode number:10
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:2 attack:8 friend:1 2 3 4 8 7 6 5 0 stage:1-5
+  action mode:3 attack the gate (2500,2000)of building 1  stage:1-5
+  speed:5
+  radius:20
+  life:250
+  life recover speed:2
+  attack:15
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:10
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 29
+  name:poi
+  initial_pos_x:3800
+  initial_pos_y:1900
+  action mode number:10
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (2500,2000) of building 1 stage:1-5
+  action mode:2 attack:8 friend:1 2 3 4 8 7 6 5 0 stage:1-5
+  speed:5
+  radius:20
+  life:250
+  life recover speed:2
+  attack:15
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:10
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 30
+  name:啊
+  initial_pos_x:1900
+  initial_pos_y:200
+  action mode number:10
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:2 attack:8 friend:1 2 3 4 8 7 6 5 0 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  speed:5
+  radius:20
+  life:250
+  life recover speed:2
+  attack:15
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:10
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 31
+  name:poi
+  initial_pos_x:2100
+  initial_pos_y:200
+  action mode number:10
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  action mode:2 attack:8 friend:1 2 3 4 8 7 6 5 0 stage:1-5
+  speed:5
+  radius:20
+  life:250
+  life recover speed:2
+  attack:15
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:10
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 32
+  name:啊
+  initial_pos_x:250
+  initial_pos_y:1900
+  action mode number:10
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:2 attack:8 friend:1 2 3 4 8 7 6 5 0 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  speed:5
+  radius:20
+  life:250
+  life recover speed:2
+  attack:15
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:10
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 33
+  name:poi
+  initial_pos_x:250
+  initial_pos_y:2100
+  action mode number:10
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  action mode:2 attack:8 friend:1 2 3 4 8 7 6 5 0 stage:1-5
+  speed:5
+  radius:20
+  life:250
+  life recover speed:2
+  attack:15
+  attack range:40
+  def:6
+  act interval:6
+  attack interval:10
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 1000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 34
+  name:炮
+  initial_pos_x:2000
+  initial_pos_y:3800
+  action mode number:13
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (2000,2500) of building 1 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  action mode:2 attack:9 friend:1 2 3 4 0 8 7 6 5 stage:1-5
+  speed:2
+  radius:80
+  life:800
+  life recover speed:2
+  attack:150
+  attack range:10
+  def:10
+  act interval:6
+  attack interval:50
+  long distance attack range:1000
+  long distance attack speed:20
+  attack pattern:1
+  pattern 1:0 120 0 0
+  weapon_amount:0 0 100000 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 35
+  name:炮
+  initial_pos_x:2000
+  initial_pos_y:200
+  action mode number:13
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,2500) of building 1 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2500,2000) of building 1 stage:1-5
+  action mode:2 attack:9 friend:1 2 3 4 0 8 7 6 5 stage:1-5
+  speed:2
+  radius:80
+  life:800
+  life recover speed:2
+  attack:150
+  attack range:10
+  def:10
+  act interval:6
+  attack interval:50
+  long distance attack range:1000
+  long distance attack speed:20
+  attack pattern:1
+  pattern 1:0 120 0 0
+  weapon_amount:0 0 100000 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 36
+  name:炮
+  initial_pos_x:200
+  initial_pos_y:2000
+  action mode number:13
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,2500) of building 1 stage:1-5
+  action mode:3 attack the gate (2500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  action mode:2 attack:9 friend:1 2 3 4 0 8 7 6 5 stage:1-5
+  speed:2
+  radius:80
+  life:800
+  life recover speed:2
+  attack:150
+  attack range:10
+  def:10
+  act interval:6
+  attack interval:50
+  long distance attack range:1000
+  long distance attack speed:20
+  attack pattern:1
+  pattern 1:0 120 0 0
+  weapon_amount:0 0 100000 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 37
+  name:炮
+  initial_pos_x:3802
+  initial_pos_y:2000
+  action mode number:13
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (2500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,2500) of building 1 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  action mode:2 attack:9 friend:1 2 3 4 0 8 7 6 5 stage:1-5
+  speed:2
+  radius:80
+  life:800
+  life recover speed:2
+  attack:150
+  attack range:10
+  def:10
+  act interval:6
+  attack interval:50
+  long distance attack range:1000
+  long distance attack speed:20
+  attack pattern:1
+  pattern 1:0 120 0 0
+  weapon_amount:0 0 100000 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+friend small soldier:2/1 persecond at every stronghold at most:40
+  name:o
+  initial_pos_x:0
+  initial_pos_y:0
+  action mode number:0
+  speed:5
+  radius:10
+  life:100
+  life recover speed:1
+  attack:10
+  attack range:40
+  def:1
+  act interval:6
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:3
+  pattern 1:0 10 0 0 8
+  pattern 2:1 10 0 0 8
+  pattern 3:2 10 10 1 6
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+eny small soldier:3/1 persecond at every stronghold at most:80
+  name:o
+  initial_pos_x:0
+  initial_pos_y:0
+  action mode number:0
+  speed:5
+  radius:10
+  life:100
+  life recover speed:1
+  attack:10
+  attack range:40
+  def:1
+  act interval:30
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:3
+  pattern 1:0 10 0 0 8
+  pattern 2:1 10 0 0 8
+  pattern 3:2 10 10 1 6
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+stage mode:6
+  1 1 34
+  1 1 35
+  1 1 36
+  1 1 37
+  4 1 0
+  5 1 1 1
+
+stage 4
+message number:3
+张远背叛！
+放弃宫殿，前往东北据点
+击退观望中的张远
+mark:1
+3800 200
+
+friend number:0
+
+enemy number:13
+enemy 11
+  name:啊
+  initial_pos_x:3800
+  initial_pos_y:2100
+  action mode number:13
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:7 follow:41 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,2500) of building 1 stage:1-5
+  speed:5
+  radius:20
+  life:400
+  life recover speed:4
+  attack:15
+  attack range:40
+  def:6
+  act interval:2
+  attack interval:3
+  long distance attack range:1000
+  long distance attack speed:40
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:0 1000000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+
+enemy 11
+  name:啊
+  initial_pos_x:3800
+  initial_pos_y:1900
+  action mode number:13
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:7 follow:41 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,2500) of building 1 stage:1-5
+  speed:5
+  radius:20
+  life:400
+  life recover speed:4
+  attack:15
+  attack range:40
+  def:6
+  act interval:2
+  attack interval:3
+  long distance attack range:1000
+  long distance attack speed:40
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:0 1000000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+
+enemy 11
+  name:啊
+  initial_pos_x:200
+  initial_pos_y:3600
+  action mode number:13
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:7 follow:41 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,2500) of building 1 stage:1-5
+  speed:5
+  radius:20
+  life:400
+  life recover speed:4
+  attack:15
+  attack range:40
+  def:6
+  act interval:2
+  attack interval:3
+  long distance attack range:1000
+  long distance attack speed:40
+  attack pattern:5
+  pattern 1:3 0 10 0 16
+  pattern 2:3 0 30 0 16
+  pattern 3:3 0 50 0 16
+  pattern 4:3 0 70 0 16
+  pattern 5:3 0 90 0 16
+  weapon_amount:0 1000000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 41
+  name:我是你爷爷
+  initial_pos_x:200
+  initial_pos_y:3800
+  action mode number:13
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,2500) of building 1 stage:1-5
+  action mode:2 attack:8 friend:1 2 3 4 8 7 6 0 stage:1-5
+  speed:5
+  radius:50
+  life:1350
+  life recover speed:10
+  attack:35
+  attack range:40
+  def:30
+  act interval:4
+  attack interval:8
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 40 0 8
+  pattern 2:1 240 60 0 8
+  pattern 3:2 0 40 0 6
+  pattern 4:2 30 70 0 6
+  pattern 5:3 70 100 1 16
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 10 0 0 0 0 0 0
+  graph\009.jpg
+
+enemy 42
+  name:poi
+  initial_pos_x:200
+  initial_pos_y:2100
+  action mode number:13
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:7 follow:41 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,2500) of building 1 stage:1-5
+  speed:5
+  radius:20
+  life:250
+  life recover speed:10
+  attack:15
+  attack range:40
+  def:28
+  act interval:0
+  attack interval:0
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:3 10 10 0 16
+  pattern 2:3 10 30 0 16
+  pattern 3:3 10 50 0 16
+  pattern 4:3 10 70 0 16
+  pattern 5:3 10 90 0 16
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+
+enemy 43
+  name:poi
+  initial_pos_x:3800
+  initial_pos_y:200
+  action mode number:1
+  action mode:7 follow:50 stage:1-5
+  speed:5
+  radius:20
+  life:350
+  life recover speed:4
+  attack:15
+  attack range:40
+  def:15
+  act interval:6
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 10 0 6
+  pattern 4:2 10 20 0 6
+  pattern 5:3 30 30 1 16
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 44
+  name:poi
+  initial_pos_x:200
+  initial_pos_y:2100
+  action mode number:13
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:7 follow:41 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,2500) of building 1 stage:1-5
+  speed:5
+  radius:20
+  life:250
+  life recover speed:10
+  attack:15
+  attack range:40
+  def:28
+  act interval:0
+  attack interval:0
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:3 10 10 0 16
+  pattern 2:3 10 30 0 16
+  pattern 3:3 10 50 0 16
+  pattern 4:3 10 70 0 16
+  pattern 5:3 10 90 0 16
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+
+enemy 45
+  name:poi
+  initial_pos_x:200
+  initial_pos_y:2100
+  action mode number:13
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:7 follow:41 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,2500) of building 1 stage:1-5
+  speed:5
+  radius:20
+  life:250
+  life recover speed:10
+  attack:15
+  attack range:40
+  def:28
+  act interval:0
+  attack interval:0
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:3 10 10 0 16
+  pattern 2:3 10 30 0 16
+  pattern 3:3 10 50 0 16
+  pattern 4:3 10 70 0 16
+  pattern 5:3 10 90 0 16
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+
+enemy 46
+  name:炮
+  initial_pos_x:2000
+  initial_pos_y:3800
+  action mode number:13
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (2000,2500) of building 1 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  action mode:2 attack:9 friend:1 2 3 4 0 8 7 6 5 stage:1-5
+  speed:2
+  radius:80
+  life:800
+  life recover speed:2
+  attack:150
+  attack range:10
+  def:2
+  act interval:6
+  attack interval:50
+  long distance attack range:1000
+  long distance attack speed:20
+  attack pattern:1
+  pattern 1:0 120 0 0
+  weapon_amount:0 0 100000 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 47
+  name:炮
+  initial_pos_x:2000
+  initial_pos_y:200
+  action mode number:13
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,2500) of building 1 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2500,2000) of building 1 stage:1-5
+  action mode:2 attack:9 friend:1 2 3 4 0 8 7 6 5 stage:1-5
+  speed:2
+  radius:80
+  life:800
+  life recover speed:2
+  attack:150
+  attack range:10
+  def:2
+  act interval:6
+  attack interval:50
+  long distance attack range:1000
+  long distance attack speed:20
+  attack pattern:1
+  pattern 1:0 120 0 0
+  weapon_amount:0 0 100000 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 48
+  name:炮
+  initial_pos_x:200
+  initial_pos_y:2000
+  action mode number:13
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,2500) of building 1 stage:1-5
+  action mode:3 attack the gate (2500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  action mode:2 attack:9 friend:1 2 3 4 0 8 7 6 5 stage:1-5
+  speed:2
+  radius:80
+  life:800
+  life recover speed:2
+  attack:150
+  attack range:10
+  def:2
+  act interval:6
+  attack interval:50
+  long distance attack range:1000
+  long distance attack speed:20
+  attack pattern:1
+  pattern 1:0 120 0 0
+  weapon_amount:0 0 100000 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 49
+  name:炮
+  initial_pos_x:3802
+  initial_pos_y:2000
+  action mode number:13
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (2500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,2500) of building 1 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  action mode:2 attack:9 friend:1 2 3 4 0 8 7 6 5 stage:1-5
+  speed:2
+  radius:80
+  life:800
+  life recover speed:2
+  attack:150
+  attack range:10
+  def:2
+  act interval:6
+  attack interval:50
+  long distance attack range:1000
+  long distance attack speed:20
+  attack pattern:1
+  pattern 1:0 120 0 0
+  weapon_amount:0 0 100000 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 50
+  name:远
+  initial_pos_x:3800
+  initial_pos_y:200
+  action mode number:1
+  action mode:7 follow:43 stage:1-5
+  speed:5
+  radius:20
+  life:350
+  life recover speed:5
+  attack:25
+  attack range:40
+  def:15
+  act interval:5
+  attack interval:5
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 120 0 0 8
+  pattern 2:1 240 0 0 8
+  pattern 3:2 0 30 3 6
+  pattern 4:2 10 70 4 6
+  pattern 5:3 30 30 5 16
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:-1 0 0 0 0 0 0 0 0 0
+
+friend small soldier:2/1 persecond at every stronghold at most:40
+  name:o
+  initial_pos_x:0
+  initial_pos_y:0
+  action mode number:0
+  speed:5
+  radius:10
+  life:100
+  life recover speed:1
+  attack:10
+  attack range:40
+  def:1
+  act interval:6
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:3
+  pattern 1:0 10 0 0 8
+  pattern 2:1 10 0 0 8
+  pattern 3:2 10 10 1 6
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+eny small soldier:1/1 persecond at every stronghold at most:80
+  name:o
+  initial_pos_x:0
+  initial_pos_y:0
+  action mode number:0
+  speed:5
+  radius:10
+  life:30
+  life recover speed:1
+  attack:7
+  attack range:40
+  def:1
+  act interval:30
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:3
+  pattern 1:0 10 0 0 8
+  pattern 2:1 10 0 0 8
+  pattern 3:2 10 10 1 6
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+stage mode:6
+  1 1 34
+  1 1 35
+  1 1 36
+  1 1 37
+  4 1 0
+  1 1 50
+
+stage 5
+message:1
+毛鑫已经被捉
+mark:0
+
+frd:0
+eny:8
+enemy 51
+  name:炮
+  initial_pos_x:2000
+  initial_pos_y:3800
+  action mode number:13
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (2000,2500) of building 1 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  action mode:2 attack:9 friend:1 2 3 4 0 8 7 6 5 stage:1-5
+  speed:4
+  radius:80
+  life:800
+  life recover speed:20
+  attack:300
+  attack range:10
+  def:20
+  act interval:6
+  attack interval:50
+  long distance attack range:1500
+  long distance attack speed:20
+  attack pattern:1
+  pattern 1:0 120 0 0
+  weapon_amount:0 0 100000 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 52
+  name:炮
+  initial_pos_x:2000
+  initial_pos_y:200
+  action mode number:13
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,2500) of building 1 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2500,2000) of building 1 stage:1-5
+  action mode:2 attack:9 friend:1 2 3 4 0 8 7 6 5 stage:1-5
+  speed:4
+  radius:80
+  life:800
+  life recover speed:20
+  attack:300
+  attack range:10
+  def:20
+  act interval:6
+  attack interval:50
+  long distance attack range:1500
+  long distance attack speed:20
+  attack pattern:1
+  pattern 1:0 120 0 0
+  weapon_amount:0 0 100000 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 53
+  name:炮
+  initial_pos_x:200
+  initial_pos_y:2000
+  action mode number:13
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,2500) of building 1 stage:1-5
+  action mode:3 attack the gate (2500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  action mode:2 attack:9 friend:1 2 3 4 0 8 7 6 5 stage:1-5
+  speed:4
+  radius:80
+  life:800
+  life recover speed:20
+  attack:300
+  attack range:10
+  def:20
+  act interval:6
+  attack interval:50
+  long distance attack range:1500
+  long distance attack speed:20
+  attack pattern:1
+  pattern 1:0 120 0 0
+  weapon_amount:0 0 100000 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 54
+  name:炮
+  initial_pos_x:3802
+  initial_pos_y:2000
+  action mode number:13
+  action mode:3 attack the gate (2000,3700) of building 13 stage:1-5
+  action mode:3 attack the gate (2000,3600) of building 13 stage:1-5
+  action mode:3 attack the gate (3700,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (3600,2000) of building 15 stage:1-5
+  action mode:3 attack the gate (2000,300) of building 12 stage:1-5
+  action mode:3 attack the gate (2000,400) of building 12 stage:1-5
+  action mode:3 attack the gate (300,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (400,2000) of building 14 stage:1-5
+  action mode:3 attack the gate (2500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,2500) of building 1 stage:1-5
+  action mode:3 attack the gate (1500,2000) of building 1 stage:1-5
+  action mode:3 attack the gate (2000,1500) of building 1 stage:1-5
+  action mode:2 attack:9 friend:1 2 3 4 0 8 7 6 5 stage:1-5
+  speed:4
+  radius:80
+  life:1500
+  life recover speed:0
+  attack:300
+  attack range:10
+  def:10
+  act interval:6
+  attack interval:50
+  long distance attack range:1500
+  long distance attack speed:20
+  attack pattern:1
+  pattern 1:0 120 0 0
+  weapon_amount:0 0 100000 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+enemy 55
+  name:poi
+  initial_pos_x:3800
+  initial_pos_y:200
+  action mode number:1
+  action mode:2 atk:1 player:0 stage:1-5
+  speed:5
+  radius:20
+  life:250
+  life recover speed:10
+  attack:15
+  attack range:40
+  def:28
+  act interval:0
+  attack interval:0
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:3 10 10 0 16
+  pattern 2:3 10 30 0 16
+  pattern 3:3 10 50 0 16
+  pattern 4:3 10 70 0 16
+  pattern 5:3 10 90 0 16
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+
+enemy 56
+  name:poi
+  initial_pos_x:3800
+  initial_pos_y:200
+  action mode number:1
+  action mode:2 atk:1 player:0 stage:1-5
+  speed:5
+  radius:20
+  life:250
+  life recover speed:10
+  attack:15
+  attack range:40
+  def:28
+  act interval:0
+  attack interval:0
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:3 10 10 0 16
+  pattern 2:3 10 30 0 16
+  pattern 3:3 10 50 0 16
+  pattern 4:3 10 70 0 16
+  pattern 5:3 10 90 0 16
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+
+enemy 57
+  name:poi
+  initial_pos_x:200
+  initial_pos_y:2100
+  action mode number:1
+  action mode:2 atk:1 player:0 stage:1-5
+  speed:5
+  radius:20
+  life:250
+  life recover speed:10
+  attack:15
+  attack range:40
+  def:28
+  act interval:0
+  attack interval:0
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:3 10 10 0 16
+  pattern 2:3 10 30 0 16
+  pattern 3:3 10 50 0 16
+  pattern 4:3 10 70 0 16
+  pattern 5:3 10 90 0 16
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+
+enemy 58
+  name:poi
+  initial_pos_x:200
+  initial_pos_y:2100
+  action mode number:1
+  action mode:2 atk:1 player:0 stage:1-5
+  speed:5
+  radius:20
+  life:250
+  life recover speed:10
+  attack:15
+  attack range:40
+  def:28
+  act interval:0
+  attack interval:0
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:3 10 10 0 16
+  pattern 2:3 10 30 0 16
+  pattern 3:3 10 50 0 16
+  pattern 4:3 10 70 0 16
+  pattern 5:3 10 90 0 16
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+friend small soldier:2/1 persecond at every stronghold at most:10
+  name:o
+  initial_pos_x:0
+  initial_pos_y:0
+  action mode number:0
+  speed:5
+  radius:10
+  life:60
+  life recover speed:1
+  attack:10
+  attack range:40
+  def:1
+  act interval:6
+  attack interval:20
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:3
+  pattern 1:0 10 0 0 8
+  pattern 2:1 10 0 0 8
+  pattern 3:2 10 10 1 6
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+eny small soldier:1/1 persecond at every stronghold at most:80
+  name:o
+  initial_pos_x:0
+  initial_pos_y:0
+  action mode number:0
+  speed:5
+  radius:10
+  life:150
+  life recover speed:10
+  attack:13
+  attack range:40
+  def:10
+  act interval:4
+  attack interval:4
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:3
+  pattern 1:0 10 0 0 8
+  pattern 2:1 10 0 0 8
+  pattern 3:2 10 10 1 6
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+
+stage mode:1
+1 2 0 64
+
+event number:26
+Event 1
+  condition number:1
+  condition 1:1 0 450 450 30
+  event:2
+friend 59
+  name:狗
+  initial_pos_x:450
+  initial_pos_y:450
+  action mode number:1
+  action mode:7 follow:0 stage:1-5
+  speed:12
+  radius:17
+  life:120
+  life recover speed:4
+  attack:17
+  attack range:20
+  def:30
+  act interval:0
+  attack interval:8
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 40 0 1 3
+  pattern 2:1 40 0 2 3
+  pattern 3:0 40 0 3 3
+  pattern 4:2 0 0 4 3
+  pattern 5:2 0 0 5 3
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+  pos and ch:450 450 1
+
+Event 2
+  condition number:1
+  condition 1:1 0 450 450 30
+  event:4 狗:汪汪汪
+
+Event 3
+  condition number:1
+  condition 1:1 0 3550 3550 30
+  event:2
+friend 60
+  name:翘
+  initial_pos_x:3550
+  initial_pos_y:3550
+  action mode number:1
+  action mode:7 follow:0 stage:1-5
+  speed:7
+  radius:20
+  life:250
+  life recover speed:4
+  attack:15
+  attack range:20
+  def:15
+  act interval:0
+  attack interval:4
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:2 10 20  1 6
+  pattern 2:2 10 30  2 6
+  pattern 3:2 10 40  3 6
+  pattern 4:2 40 50  4 6
+  pattern 5:2 10 100  5 6
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+  pos and ch:450 450 1
+
+Event 4
+  condition number:1
+  condition 1:1 0 3550 3550 30
+  event:4 翘:多谢相救
+
+Event 5
+  condition number:1
+  condition 1:0 54 -10 0 0
+  event:1 12 54 20 100 400
+
+Event 6
+  condition number:2
+  condition 1:0 50 -10 0 0
+  condition 2:1 0 5220 70 50
+  event:0 10 5200 70 1 -1 30
+
+Event 7
+  condition number:2
+  condition 1:0 50 -10 0 0
+  condition 2:1 0 5200 70 50
+  event:4 张远在这里留了一杆枪
+
+Event 8
+  condition number:2
+  condition 1:1 0 5250 5250 800
+  condition 2:0 50 -10 0 0
+  event:2
+friend 61
+  name:鑫
+  initial_pos_x:5250
+  initial_pos_y:5250
+  action mode number:1
+  action mode:7 follow:0 stage:1-5
+  speed:7
+  radius:40
+  life:1350
+  life recover speed:4
+  attack:10
+  attack range:80
+  def:30
+  act interval:0
+  attack interval:9
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:1 60 20  1 16
+  pattern 2:0 120 30  2 16
+  pattern 3:1 120 40  3 16
+  pattern 4:0 240 50  4 16
+  pattern 5:3 10 30  5 36
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+  pos and ch:5250 5250 1
+
+Event 9
+  condition number:2
+  condition 1:1 0 5250 5250 800
+  condition 2:0 50 -10 0 0
+  event:2
+friend 62
+  name:马
+  initial_pos_x:5250
+  initial_pos_y:5250
+  action mode number:1
+  action mode:7 follow:61 stage:1-5
+  speed:7
+  radius:20
+  life:250
+  life recover speed:4
+  attack:30
+  attack range:20
+  def:10
+  act interval:0
+  attack interval:4
+  long distance attack range:1500
+  long distance attack speed:30
+  attack pattern:5
+  pattern 1:2 10 20  1 6
+  pattern 2:2 10 30  2 6
+  pattern 3:2 10 40  3 6
+  pattern 4:2 40 50  4 6
+  pattern 5:2 10 100  5 6
+  weapon_amount:0 10000000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 -1 0 0 0 0 0 0 0 0
+  pos and ch:5250 5250 1
+
+
+Event 10
+  condition number:2
+  condition 1:1 0 5250 5250 800
+  condition 2:0 50 -10 0 0
+  event:4 毛鑫出现了！设法营救毛鑫，
+
+Event 11
+  condition number:2
+  condition 1:1 0 5250 5250 800
+  condition 2:0 50 -10 0 0
+  event:4 并护送至关外北部逃脱地点。
+
+Event 12
+  condition number:2
+  condition 1:0 59 1 30 0
+  condition 2:3 0 59 0 800
+  event:3
+friend 63
+  name:狗
+  initial_pos_x:450
+  initial_pos_y:450
+  action mode number:1
+  action mode:7 follow:0 stage:1-5
+  speed:14
+  radius:40
+  life:600
+  life recover speed:4
+  attack:35
+  attack range:50
+  def:15
+  act interval:0
+  attack interval:2
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:0 40 0 1 3
+  pattern 2:1 40 0 2 3
+  pattern 3:0 40 0 3 3
+  pattern 4:2 0 0 4 3
+  pattern 5:2 0 0 5 3
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 0 0 0 0 0 0 0 0 0
+  pos and ch:59 1
+
+Event 13
+  condition number:2
+  condition 1:0 59 1 30 0
+  condition 2:3 0 59 0 800
+  event:4 小狗进入狂怒！变成大狗
+
+Event 14
+  condition number:2
+  condition 1:0 59 1 30 0
+  condition 2:3 0 59 0 800
+  event :6 59 0
+
+Event 15
+  condition number:1
+  condition 1:0 41 -10 0 0
+event:2
+enemy 64
+  name:焰
+  initial_pos_x:5250
+  initial_pos_y:5250
+  action mode number:1
+  action mode:2 attack:1 friend:0 stage:1-5
+  speed:5
+  radius:50
+  life:2000
+  life recover speed:10
+  attack:40
+  attack range:100
+  def:30
+  act interval:0
+  attack interval:6
+  long distance attack range:1500
+  long distance attack speed:40
+  attack pattern:5
+  pattern 1:2 50 40 0 8
+  pattern 2:1 240 60 0 8
+  pattern 3:3 10 40 0 6
+  pattern 4:2 20 70 0 6
+  pattern 5:3 100 100 90 16
+  weapon_amount:1 1000000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 -1 0 10 0 0 0 0 0 0
+  graph\008.jpg
+  pos and ch:5250 5250 2
+
+Event 16
+  condition number:1
+  condition 1:0 41 -10 0 0
+  event:4 敌方主帅出动!
+
+Event 17
+  condition number:1
+  condition 1:1 0 2200 6200 100
+  event:2
+friend 65
+  name:蕉
+  initial_pos_x:2200
+  initial_pos_y:6195
+  action mode number:1
+  action mode:7 follow:0 stage:1-5
+  speed:20
+  radius:20
+  life:250
+  life recover speed:4
+  attack:25
+  attack range:40
+  def:10
+  act interval:0
+  attack interval:3
+  long distance attack range:1500
+  long distance attack speed:30
+  attack pattern:5
+  pattern 1:0 60 0  1 6
+  pattern 2:1 60 0  2 6
+  pattern 3:0 60 0  3 6
+  pattern 4:1 60 0  4 6
+  pattern 5:0 60 0  5 6
+  weapon_amount:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:-1 0 0 0 0 0 0 0 0 0
+  pos and ch:2200 6195 1
+
+Event 18
+  condition number:1
+  condition 1:1 0 2200 6200 100
+  event:4 隐居的蕉:老夫还能再战
+
+Event 19
+  condition number:1
+  condition 1:1 61 6400 0 700
+  event:4 毛鑫:辛苦你了,你留下
+
+Event 20
+  condition number:1
+  condition 1:1 61 6400 0 700
+  event:4 拖延时间,我先走了
+
+Event 21
+  condition number:1
+  condition 1:1 61 6400 0 700
+  event:6 61 0
+
+Event 22
+  condition number:1
+  condition 2:0 50 -10 0 0
+  even :2
+enemy 63
+  name:poi
+  initial_pos_x:5250
+  initial_pos_y:5250
+  action mode number:1
+  action mode:2 atk:1 player:61 stage:1-5
+  speed:5
+  radius:20
+  life:250
+  life recover speed:10
+  attack:15
+  attack range:40
+  def:28
+  act interval:0
+  attack interval:0
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:3 10 10 0 16
+  pattern 2:3 10 30 0 16
+  pattern 3:3 10 50 0 16
+  pattern 4:3 10 70 0 16
+  pattern 5:3 10 90 0 16
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:-1 0 0 0 0 0 0 0 0 0
+  pos&ch:5250 5250 2
+
+Event 23
+  condition number:1
+  condition 2:0 50 -10 0 0
+  even :2
+enemy 64
+  name:阿
+  initial_pos_x:5250
+  initial_pos_y:5250
+  action mode number:1
+  action mode:7 follow:61 stage:1-5
+  speed:7
+  radius:20
+  life:250
+  life recover speed:4
+  attack:30
+  attack range:20
+  def:10
+  act interval:0
+  attack interval:4
+  long distance attack range:1500
+  long distance attack speed:30
+  attack pattern:5
+  pattern 1:2 10 20  1 6
+  pattern 2:2 10 30  2 6
+  pattern 3:2 10 40  3 6
+  pattern 4:2 40 50  4 6
+  pattern 5:2 10 100  5 6
+  weapon_amount:0 10000000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 -1 0 0 0 0 0 0 0 0
+  pos&ch:5250 5250 2
+
+Event 24
+  condition number:1
+  condition 2:0 50 -10 0 0
+  even :2
+enemy 65
+  name:poi
+  initial_pos_x:5600
+  initial_pos_y:5750
+  action mode number:1
+  action mode:2 atk:1 player:61 stage:1-5
+  speed:5
+  radius:20
+  life:250
+  life recover speed:10
+  attack:15
+  attack range:40
+  def:28
+  act interval:0
+  attack interval:0
+  long distance attack range:600
+  long distance attack speed:5
+  attack pattern:5
+  pattern 1:3 10 10 0 16
+  pattern 2:3 10 30 0 16
+  pattern 3:3 10 50 0 16
+  pattern 4:3 10 70 0 16
+  pattern 5:3 10 90 0 16
+  weapon_amount:1 0 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:-1 0 0 0 0 0 0 0 0 0
+  pos&ch:5600 5750 2
+
+Event 25
+  condition number:1
+  condition 2:0 50 -10 0 0
+  even :2
+enemy 66
+  name:阿
+  initial_pos_x:5600
+  initial_pos_y:5750
+  action mode number:1
+  action mode:7 follow:61 stage:1-5
+  speed:7
+  radius:20
+  life:250
+  life recover speed:4
+  attack:30
+  attack range:20
+  def:10
+  act interval:0
+  attack interval:4
+  long distance attack range:1500
+  long distance attack speed:30
+  attack pattern:5
+  pattern 1:2 10 20  1 6
+  pattern 2:2 10 30  2 6
+  pattern 3:2 10 40  3 6
+  pattern 4:2 40 50  4 6
+  pattern 5:2 10 100  5 6
+  weapon_amount:0 10000000 0 0 0 0 0 0 0 0
+  weapon_extra_range:0 0 0 0 0 0 0 0 0 0
+  weapon_extra_atk:0 -1 0 0 0 0 0 0 0 0
+pos &ch:5600 5750 2
+
+Event 15
+  condition number:1
+  condition 1:0 64 -10 0 0
+event:4 主帅败退!
+
+before chapter image num:0
+graph\001.jpg
+graph\002.jpg
+graph\003.jpg
+end chapter image num:0
+graph\004.jpg
+graph\005.jpg
+graph\008.jpg

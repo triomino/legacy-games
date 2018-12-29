@@ -1,0 +1,94 @@
+difficulty:0
+total chapter:1
+CompleteChap:1
+40
+atkstnum:4
+name:Äã
+sp:15
+radius:20
+full life:250
+recover sp:20
+atk:15
+akt r:150
+def:6
+act interval:0
+atk interval:4
+long dis atk r:600
+long dis atk sp:20
+atk pattern number:4
+atkpattern :0 60 0 0 8
+atkpattern :1 120 0 0 8
+atkpattern :2 0 10 4 6
+atkpattern :3 10 20 1 16
+wpr:1 100 0 0 0 0 0 0 0 0 
+wpma:0 0 0 0 0 0 0 0 0 0 
+wpmr:0 0 0 0 0 0 0 0 0 0 
+
+atkst et:100
+name:Äã
+sp:15
+radius:20
+full life:250
+recover sp:2
+atk:20
+akt r:40
+def:7
+act interval:0
+atk interval:3
+long dis atk r:600
+long dis atk sp:40
+atk pattern number:4
+atkpattern :0 60 0 3 7
+atkpattern :1 120 10 4 7
+atkpattern :2 0 10 10 5
+atkpattern :3 10 20 2 15
+wpr:1 30 0 0 0 0 0 0 0 0 
+wpma:0 0 0 0 0 0 0 0 0 0 
+wpmr:0 0 0 0 0 0 0 0 0 0 
+
+atkst et:300
+name:Äã
+sp:15
+radius:20
+full life:250
+recover sp:3
+atk:25
+akt r:40
+def:10
+act interval:0
+atk interval:2
+long dis atk r:600
+long dis atk sp:40
+atk pattern number:4
+atkpattern :0 60 5 5 6
+atkpattern :1 120 10 5 6
+atkpattern :2 0 20 10 4
+atkpattern :3 20 20 2 14
+wpr:1 50 0 0 0 0 0 0 0 0 
+wpma:0 0 0 0 0 0 0 0 0 0 
+wpmr:0 0 0 0 0 0 0 0 0 0 
+
+atkst et:800
+name:Äã
+sp:15
+radius:20
+full life:250
+recover sp:4
+atk:35
+akt r:150
+def:15
+act interval:0
+atk interval:1
+long dis atk r:600
+long dis atk sp:40
+atk pattern number:5
+atkpattern :0 60 16 5 4
+atkpattern :1 120 30 5 4
+atkpattern :2 10 20 10 3
+atkpattern :2 10 30 10 4
+atkpattern :3 30 50 6 12
+wpr:1 10 0 0 0 0 0 0 0 0 
+wpma:0 0 0 0 0 0 0 0 0 0 
+wpmr:0 0 0 0 0 0 0 0 0 0 
+
+atkst et:810

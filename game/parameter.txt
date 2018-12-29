@@ -1,0 +1,63 @@
+width:1000
+height:500
+plane_patten_number:45
+graph\0.jpg
+graph\001.jpg
+graph\002.jpg
+graph\003.jpg
+graph\004.jpg
+graph\005.jpg
+graph\006.jpg
+graph\007.jpg
+graph\008.jpg
+graph\009.jpg
+graph\010.jpg
+graph\011.jpg
+graph\012.jpg
+graph\013.jpg
+graph\014.jpg
+graph\015.jpg
+graph\016.jpg
+graph\017.jpg
+graph\018.jpg
+graph\019.jpg
+graph\020.jpg
+graph\021.jpg
+graph\022.jpg
+graph\023.jpg
+graph\024.jpg
+graph\025.jpg
+graph\026.jpg
+graph\027.jpg
+graph\028.jpg
+graph\029.jpg
+graph\030.jpg
+graph\031.jpg
+graph\032.jpg
+graph\033.jpg
+graph\034.jpg
+graph\035.jpg
+graph\036.jpg
+graph\037.jpg
+graph\038.jpg
+graph\039.jpg
+graph\040.jpg
+graph\041.jpg
+graph\042.jpg
+graph\043.jpg
+graph\044.jpg
+lower bound of plane speed:3
+plane speed range:7
+total plane:100
+shell speed:7
+shell radius:10
+shell number upper bound at every moment:5
+flexible of your cannon:0.3
+draw_interval:10
+plane_move_interval:10
+plane_occur_interval:1000
+game_start_interval:2000
+shell_move_interval:10
+soldier falling speed:1
+soldier walking speed:1
+life at beginning:5

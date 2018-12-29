@@ -1,0 +1,1571 @@
+#include "acllib.h"
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<time.h>
+#include<math.h>
+#include "t.h"
+#include "v.h"
+#include "f.h"
+int Setup(void)
+{
+	initConsole();
+	set_value();
+	initWindow("fugitive",100,30,window_width,window_height+add_height); 
+	set_action();
+	registerKeyboardEvent(KeyboardListener);
+	registerMouseEvent(MouseListener);
+	registerTimerEvent(TimerListener);
+	set_timer();
+	beginChapter(0);
+//	int a,b,c,d;
+//	while (1)
+//	{
+//	scanf("%d %d %d %d",&a,&b,&c,&d);
+//	printf("%d\n",minHamDis(you,a,b,c,d));
+//	} 
+	return 0;
+}
+void set_value(void){
+	FILE* fp=fopen("saving.txt","r");
+	fscanf(fp,"%*[^:]:%d",&diff);
+	get_man_info(&player,fp,you);
+	fclose(fp);
+	fp=fopen("set.txt","r");
+	fscanf(fp,"%*[^:]:%d",&actions_interval);
+	fscanf(fp,"%*[^:]:%d",&window_width);
+	fscanf(fp,"%*[^:]:%d",&window_height);
+	fscanf(fp,"%*[^:]:%d",&add_height);
+	fscanf(fp,"%*[^:]:%d",&chapter_number);
+	fclose(fp);
+	start=time(NULL);
+	color_set();
+	player.ch=you;
+	srand(start);
+}
+void color_set(void){
+	mycolor.bc=GREEN;
+	mycolor.pc=BLACK;
+	mycolor.pw=2;
+	mycolor.tbkc=GREEN;
+	mycolor.ts=20;
+	mycolor.tc=WHITE;
+	frdcolor.bc=BLUE;
+	frdcolor.pc=BLACK;
+	frdcolor.pw=2;
+	frdcolor.tbkc=BLUE;
+	frdcolor.ts=20;
+	frdcolor.tc=WHITE;
+	enycolor.bc=RED;
+	enycolor.pc=BLACK;
+	enycolor.pw=2;
+	enycolor.tbkc=RED;
+	enycolor.ts=20;
+	enycolor.tc=WHITE;
+}
+void get_man_info(man *p,FILE* fp,character chrct){
+	fscanf(fp,"%*[^:]:%s",&p->name);
+	if (chrct!=you){
+		fscanf(fp,"%*[^:]:%d",&p->x);
+		fscanf(fp,"%*[^:]:%d",&p->y);
+		fscanf(fp,"%*[^:]:%d",&p->amn);
+		for (int i=0;i<p->amn;i++){
+			fscanf(fp,"%*[^:]:%d",&p->am[i]);
+			switch (p->am[i]){
+				case 0:fscanf(fp,"%*[^(](%d,%d)",&p->amx[i],&p->amy[i]);
+						break;
+				case 1:
+						break;
+				case 2:fscanf(fp,"%*[^:]:%d",&p->amatkn[i]);
+						fscanf(fp,"%*[^:]:");
+						for (int j=0;j<p->amatkn[i];j++){
+							fscanf(fp,"%d",&p->amatk[i][j]);
+							p->amatk[i][j]--;
+						}
+						break;
+				case 3:fscanf(fp,"%*[^(](%d,%d)",&p->amx[i],&p->amy[i]);
+						fscanf(fp,"%*[^b]building %d",&p->amatko[i]);
+						break;
+			}
+			fscanf(fp,"%*[^:]:%d-%d",&p->amb[i],&p->ame[i]);
+			p->amb[i]--;
+			p->ame[i]--;
+		}
+	}	
+	fscanf(fp,"%*[^:]:%d",&p->sp);
+	fscanf(fp,"%*[^:]:%d",&p->r);
+	fscanf(fp,"%*[^:]:%d",&p->fl);
+	fscanf(fp,"%*[^:]:%d",&p->gl);
+	fscanf(fp,"%*[^:]:%d",&p->atk);
+	fscanf(fp,"%*[^:]:%d",&p->atk_r);
+	fscanf(fp,"%*[^:]:%d",&p->def);
+	fscanf(fp,"%*[^:]:%d",&p->atkint);
+	fscanf(fp,"%*[^:]:%d",&p->lda_r);
+	fscanf(fp,"%*[^:]:%d",&p->lda_sp);
+	fscanf(fp,"%*[^:]:%d",&p->atkpn);
+	for (int i=0;i<p->atkpn;i++)
+	{
+		fscanf(fp,"%*[^:]:%d",&p->atkp[i]);
+		switch (p->atkp[i]){
+			case 0:fscanf(fp,"%d %d %d",&p->atkag[i],&p->atkmr[i],&p->atkma[i]);
+					break;
+			case 1:fscanf(fp,"%d %d %d",&p->atkag[i],&p->atkmr[i],&p->atkma[i]);
+					break;
+			case 2:fscanf(fp,"%d %d %d",&p->atkdis[i],&p->atkmr[i],&p->atkma[i]);
+					break;
+			case 3:fscanf(fp,"%d %d %d",&p->atkdis[i],&p->atkmr[i],&p->atkma[i]);
+					break;
+		}
+	}
+	fscanf(fp,"%*[^:]:");
+	for (int i=0;i<wp_number;i++)
+	fscanf(fp,"%d",&p->wpr[i]);
+	fscanf(fp,"%*[^:]:");
+	for (int i=0;i<wp_number;i++)
+	fscanf(fp,"%d",&p->wpmr[i]);
+	fscanf(fp,"%*[^:]:");
+	for (int i=0;i<wp_number;i++)
+	fscanf(fp,"%d",&p->wpma[i]);
+	p->rl=p->fl;
+//	if (chrct!=you) printf("%d %d %s\n",p->fl,p->amn,p->name);
+//	printf("%d %d %d\n",p->atkmr[0],p->atkmr[1],p->atkmr[2]);
+}
+void set_timer(void){
+	startTimer(0,actions_interval);
+	startTimer(1,1000);//life recover and small soldier occur
+}
+void set_action(void){
+}
+void KeyboardListener(int key, int event){
+	if (condition==operate)
+	if (event==0)
+	{
+		int c=0;
+		switch(key){
+			case 87:player.moving=1;
+					player.movetoy=player.y-player.sp;
+					player.movetox=player.x;
+					break;
+			case 65:player.moving=1;
+					player.movetox=player.x-player.sp;
+					player.movetoy=player.y;
+					break;
+			case 83:player.moving=1;
+					player.movetoy=player.y+player.sp;
+					player.movetox=player.x;
+					break;
+			case 68:player.moving=1;
+					player.movetox=player.x+player.sp;
+					player.movetoy=player.y;
+					break;
+			case 74:attackto(&player,player.atktox,player.atktoy);
+					break;
+			case 82:{
+				if (player.musou==0) player.musou=1;
+				for (int i=0;i<total_pattern;i++){
+					if (apfn[i]>3) apfn[i]-=2;
+				}
+				break;
+			}//musou
+			default:if (key>48&&key<=48+wp_number) player.weapon=key-49;
+			else if (key>96&&key<=96+wp_number) player.weapon=key-97;
+			break;
+		}
+	}
+}
+void MouseListener(int x,int y,int button,int event){	
+	if (condition==operate){
+		switch (event){
+			case 0:switch (button) {
+				case 1:attackto(&player,x+left_bound,y+up_bound);
+					break;		
+				case 3:player.moving=1;
+						player.movetox=x+left_bound;
+						player.movetoy=y+up_bound;//move
+				break;
+			}	break;
+			case 4:player.weapon=(player.weapon+1)%wp_number;
+					break;
+			case 3:do{
+					player.weapon=(player.weapon+wp_number-1)%wp_number;
+					}while (player.wpr[player.weapon]==0);					
+					break;
+		}
+	}	
+}
+void attackto(man*p,int x,int y){
+	if (p->weapon==0){
+		 if (p->atting==0&&entropy-p->attlt>p->atkint) 
+		 {
+			p->atting=1;
+			if (entropy-p->attlt<p->atkint+sucint)
+			p->attpat=(p->attpat+1)%p->atkpn;
+			else p->attpat=0;
+			p->atktox=x;
+			p->atktoy=y;
+		}}
+		else if (p->weapon==1){
+			if (p->atting==0){
+				p->atting=1;
+				p->atktox=x;
+				p->atktoy=y;
+				p->wpr[1]--;
+				if (p->wpr[1]<=0) {
+					p->weapon=0;
+				}
+			}
+		}
+}
+int dis2(int x,int y,int tox,int toy){
+	return ((x-tox)*(x-tox)+(y-toy)*(y-toy));
+}
+int inbd(int x,int y,obstacle* p){
+	return (x>p->l&&x<p->r&&y>p->u&&y<p->d);
+}
+void swap(int *a,int *b){
+	int temp=*a;
+	*a=*b;
+	*b=temp;
+}
+int findmy(int y){
+//	int j;
+//	for (j=0;j<hor&&my[j+1]<y;j++);
+//	return j;
+	int l=0,r=hor-1,m;
+	while (l+1<r){
+		m=(l+r)>>1;
+		if (my[m]<y) l=m;
+		else r=m;
+	}
+	return l;
+}
+int findmx(int x){
+//	int j;
+//	for (j=0;j<ver&&mx[j+1]<x;j++);
+//	return j;
+	int l=0,r=ver-1,m;
+	while (l+1<r){
+		m=(l+r)>>1;
+		if (mx[m]<x) l=m;
+		else r=m;
+	}
+	return l;
+}
+int nocrossing(character ch,int x,int y,int tox,int toy){
+	const int crossing=0;
+//	printf("1 %d %d %d %d\n",x,y,tox,toy);
+	if (x!=tox&&y!=toy){
+		int dx=tox-x;
+		int dy=toy-y;
+		int cm=tox*y-toy*x;
+		if (tox<x) swap(&tox,&x);
+		if (toy<y) swap(&toy,&y); 
+		int i=findmx(x);
+		int j=findmx(tox);
+		if (mx[j+1]==tox) j++;
+		for (int t=i;t<j;t++){
+			int ty=(mx[t+1]*dy+cm)/(double)dx;
+//			printf("2 %d %d\n",mx[t],ty);
+			if (!algo(ch,ctx[t],ty,ctx[t+1],ty)) {
+//				printf("2 crossing %d %d %d\n",ctx[t],ctx[t+1],ty);
+				return crossing;
+			}
+		}
+		i=findmy(y);
+		j=findmy(toy);
+		if (toy==my[j+1]) j++;
+		for (int t=i;t<j;t++){
+			int tx=(my[t+1]*dx-cm)/(double)dy;
+//			printf("3 %d %d\n",tx,my[t]);
+//			printf("%d %d %d\n",cty[t],cty[t+1],tx);
+			if (!algo(ch,tx,cty[t],tx,cty[t+1])){
+//				printf("3 crossing %d %d %d\n",cty[t],cty[t+1],tx);
+				return crossing;
+			}
+		}
+	}else if (x==tox){
+//		printf("3\n");
+		int j,k;
+		if (y>toy) swap(&y,&toy);
+		j=findmy(y);
+		k=findmy(toy);
+		if (my[k+1]==toy) k++;
+		for (int t=j;t<k;t++){
+			if (!algo(ch,x,cty[t],x,cty[t+1])){
+				return crossing;
+			}
+		}
+	}else if (y==toy){
+//		printf("4\n");
+		int i,j;
+		if (tox<x) swap(&tox,&x);
+		i=findmx(x);
+		j=findmx(tox);
+		if (mx[j+1]==tox)j++;
+		for (int t=i;t<j;t++){
+//			printf("%d %d %d %d\n",ctx[t],y,ctx[t+1],y);
+			if (!algo(ch,ctx[t],y,ctx[t+1],y)){
+				return crossing;
+			}
+		}
+	}
+//	printf("%d  5\n",entropy);
+	return !crossing;
+}
+void move(man*p){
+	int x=p->movetox;
+	int y=p->movetoy;
+	int tox,toy;
+//	printf("before nocrossing\n");
+	if (nocrossing(p->ch,p->x,p->y,x,y)){
+		int dx=x-p->x;
+		int dy=y-p->y;
+		double mo=sqrt(dx*dx+dy*dy);
+		if (mo<=p->sp) {
+			p->x=x;
+			p->y=y;
+			p->moving=0;
+		}
+		else {
+			p->x+=dx/mo*p->sp;
+			p->y+=dy/mo*p->sp;
+		}
+	}
+	else{
+		int d;
+//		dismode=R;//Road distance
+//		d=firstStep(x,y,p);
+//		if (d!=-1){
+//		}
+//		else
+			{
+			dismode=R;//road distance
+			d=firstStep(x,y,p);
+			}
+			if (d!=-1){
+				p->x+=_dx[d]*p->sp;
+				p->y+=_dy[d]*p->sp;
+			}
+			else {
+				int i=findmx(p->x);
+				int j=findmy(p->y);
+				if (p->x==mx[i+1]||p->y==my[j+1]){
+					int dx=(ctx[i]-p->x);
+					int dy=(cty[j]-p->y);
+					double mo=sqrt(dx*dx+dy*dy);
+					if (mo<=p->sp){
+						p->x=ctx[i];
+						p->y=cty[j];
+					}
+					else {
+						p->x+=dx/mo*p->sp;
+						p->y+=dy/mo*p->sp;
+					}
+				}//if on a line, move to center
+				if ((d=firstStep(x,y,p))!=-1){
+					p->x+=_dx[d]*p->sp;
+					p->y+=_dy[d]*p->sp;
+				}else {
+//					int dx=x-p->x;
+//					int dy=y-p->y;
+//					double mo=sqrt(dx*dx+dy*dy);
+//					int tox=p->x+dx/mo*p->sp;
+//					int toy=p->y+dy/mo*p->sp;
+					dismode=E;
+					if ((d=firstStep(x,y,p))!=-1){
+						p->x+=_dx[d]*p->sp;
+						p->y+=_dy[d]*p->sp;
+					}
+//					if (algo(p->ch,p->x,p->y,tox,toy))
+//					if (mo<=p->sp) {
+//						p->x=x;
+//						p->y=y;
+//						p->moving=0;
+////						printf("1 %d %d\n",p->x,p->y);
+//					}
+//					else {
+////						printf("NOOO!\n");
+////						printf("2 %d %d %d %d\n",p->x,p->y,tox,toy);
+//						p->x=tox;
+//						p->y=toy;
+//					}
+				}
+			}
+	}
+//	printf("after nocrossing\n");
+}
+void getBlock(int x,int y,int point[]){
+}
+int firstStep(int x,int y,man *p){//first step to genius 
+	if (dismode==R){
+		int dr=minHamDis(p->ch,x,y,p->x,p->y);
+		if (dr==-1) {
+	//		printf("dr=-1\n");
+			return -1;
+		}
+		dr=oppo_dr[dr];
+	//	printf("dr=%d",dr);
+		if (algo(p->ch,p->x,p->y,p->x+_dx[dr]*p->sp,p->y+_dy[dr]*p->sp)) return dr;
+		else {
+			return -1;
+		}
+	}
+	else if (dismode==E){
+		int min=dis2(p->x,p->y,x,y),mind=-1,tox,toy;
+		for (int d=0;d<4;d++){
+			tox=p->x+p->sp*_dx[d];
+			toy=p->y+p->sp*_dy[d];
+			if (min>dis2(x,y,tox,toy)&&algo(p->ch,p->x,p->y,tox,toy)){
+				mind=d;
+				min=dis2(x,y,tox,toy);
+			}
+		}
+		return mind;
+	}
+//		printf("x%d y%d tox%d toy%d dis%d\n",p->x,p->y,tox,toy,min);
+	return -1;
+}
+int danger(int x,int y,character ch){
+	man*p;
+	if (ch==friends||ch==you){
+		for (int i=0;i<est_num[stage];i++){
+			p=&eny[stage][i];
+			if (p->rl>0)	
+			if (dis2(p->x,p->y,x,y)<maxatkdis2(p)){
+				return 1;
+			}
+		}
+	}
+	else if (ch==enemy){
+		for (int i=0;i<frd_num;i++){
+			p=&frd[i];
+			if (p->rl)
+			if (dis2(p->x,p->y,x,y)<maxatkdis2(p)){
+				return 1;
+			}
+		}
+		p=&player;
+		if (dis2(p->x,p->y,x,y)<maxatkdis2(p)){
+		return 1;
+		}
+	}
+	
+	//for small soldier 
+	return 0;
+}
+int st_order3(int a,int b,int c){
+	return (a<b&&b<c||a>b&&b>c);
+}
+int maxatkdis2(man*p){
+	int temp=p->weapon,max=0;
+	for (int i=0;i<wp_number;i++){
+		p->weapon=i;
+		if (max<atkdis(p)) max=atkdis(p);
+	}
+	p->weapon=temp;
+	return max*max;
+}
+int order3(int a,int b,int c){
+	return (a<=b&&b<=c||a>=b&&b>=c);
+}
+int onwall(int x,int y,obstacle *p){
+	int cx=(p->l+p->r)>>1;
+	int cy=(p->u+p->d)>>1;
+	if (p->l==x&&(order3(p->u,y,cy-p->fll/10)||order3(cy+p->fll/10,y,p->d))) return 1;
+	if (p->r==x&&(order3(p->u,y,cy-p->frl/10)||order3(cy+p->frl/10,y,p->d))) return 1;
+	if (p->u==y&&(order3(p->l,x,cx-p->ful/10)||order3(cx+p->ful/10,x,p->r))) return 1;
+	if (p->d==y&&(order3(p->l,x,cx-p->fdl/10)||order3(cx+p->fdl/10,x,p->r))) return 1;
+	return 0;
+}
+int onbd(int x,int y,obstacle*p){
+	if ((x==p->l||x==p->r)&&order3(p->u,y,p->d)) return 1;
+	if ((y==p->u||y==p->d)&&order3(p->l,x,p->r)) return 1;
+	return 0;
+}
+int outbd(int x,int y,obstacle* p){
+	return (x<p->l||x>p->r||y<p->u||y>p->d);
+}
+int direction(int x,int y){
+	if (x==0){
+		if (y==-1) return 0;else if (y==1) return 1;
+	}
+	if (y==0){
+		if (x==-1) return 2;else if (x==1) return 3;
+	}
+	return -1;
+}
+int algo(character ch,int x,int y,int tox,int toy){
+	if (out_of_map(tox,toy)) return 0;
+	int x1=findmx(x);
+	int y1=findmy(y);
+	int x2=findmx(tox);
+	int y2=findmy(toy);
+	int d=direction(x1-x2,y1-y2);
+	int blank=1,through_door=0;
+	if (x!=mx[x1+1]&&y!=my[y1+1]&&tox!=mx[x2+1]&&toy!=my[y2+1]){
+		if (d!=-1){
+			if (go[x1][y1][d][ch])
+			return go[x1][y1][d][ch]-1;
+		}
+		else {
+			if (x1==x2&&y1==y2) return 1;
+			else return 0;
+		}
+	}
+	else blank=0;
+	for (int i=0;i<o_num;i++){	
+		if (onwall(tox,toy,&o[i])||onwall(x,y,&o[i])) return 0;
+		if (inbd(x,y,&o[i])&&outbd(tox,toy,&o[i])||inbd(tox,toy,&o[i])&&outbd(x,y,&o[i])||onbd(tox,toy,&o[i])||onbd(x,y,&o[i])){
+//			printf("inbd\n ");
+			if (o[i].mode==2||o[i].mode==1) //it's stronghold
+			{
+//				printf("inmode\n");
+				int cx=(o[i].l+o[i].r)>>1;
+				int cy=(o[i].u+o[i].d)>>1;
+				int accept=ch==enemy&&o[i].mode==2||ch!=enemy&&o[i].mode==1;
+//				printf("acc=%d\n",accept);
+				if (order3(x,o[i].l,tox))
+				{
+//					printf("order1\n");
+					if (st_order3(cy-o[i].fll/10,y,cy+o[i].fll/10)) //door
+						{
+							through_door=1;
+							if (o[i].ll<=0||accept)
+							{
+							return 1;
+//							printf("success\n");
+							}
+							else 
+							{
+								return 0;
+//								printf("failed\n");
+							}
+						}
+					else 
+					{
+						if (blank&&!through_door) go[x1][y1][d][ch]=1;
+						return 0;
+					}
+				}
+				if (order3(x,o[i].r,tox)) 
+				{
+					if (st_order3(cy-o[i].frl/10,y,cy+o[i].frl/10)) 
+						{
+							through_door=1;
+							if (o[i].rl<=0||accept)
+							return 1;
+							else return 0;
+						}
+					else 
+					{
+						if (blank&&!through_door) go[x1][y1][d][ch]=1;
+						return 0;
+					}
+				}
+				if (order3(y,o[i].u,toy)) 
+				{
+					through_door=1;
+					if (st_order3(cx-o[i].ful/10,x,cx+o[i].ful/10)) 
+						{
+							if (o[i].ul<=0||accept)
+							return 1;
+							else return 0;
+						}
+					else 
+					{
+						if (blank&&!through_door) go[x1][y1][d][ch]=1;
+						return 0;
+					}
+				}
+				if (order3(y,o[i].d,toy)) 
+				{
+//					printf("indown\n");
+					through_door=1;
+					if (st_order3(cx-o[i].fdl/10,x,cx+o[i].fdl/10)) 
+						{
+							if (o[i].dl<=0||accept)
+							{
+								return 1;
+							}
+							else return 0;
+						}
+					else 
+					{
+						if (blank&&through_door) go[x1][y1][d][ch]=1;
+						return 0;
+					}
+				}
+			}
+		}
+	}
+	if (blank&&!through_door) 
+	{
+		go[x1][y1][d][ch]=2;
+//		printf("success!/n");
+//		printf("%d %d %d %d\n",x,y,tox,toy);
+//		printf("%d %d %d %d\n",x1,y1,x2,y2);
+	}
+	return 1;
+}
+void recover(man*p,int x){
+	if (p->rl>0)
+	if (p->rl+x<=p->fl){
+		p->rl+=x;
+	}
+	else p->rl=p->fl;
+}
+void TimerListener(int TimerID){
+	switch (TimerID){
+		case 0:
+			entropy++;
+			now=time(NULL);
+			actions();
+			draw();
+			break;
+		case 1:
+			recover(&player,player.gl);
+			for (int i=0;i<frd_num;i++){
+				recover(&frd[i],frd[i].gl);
+			}
+			for (int i=0;i<est_num[stage];i++){
+				recover(&eny[stage][i],eny[stage][i].gl);
+			}
+			break;
+	}
+//	printf("%d %d\n",player.x,player.y);
+//	printf("%d %d %d\n",entropy,ar_hd,ar_tl);
+}
+void actions(void){
+//	printf("before player act\n");
+	act(&player);
+//	printf("player act over\n");
+	for (int i=0;i<frd_num;i++) act(&frd[i]);
+//	printf("frd act over\n");
+	for (int i=0;i<est_num[stage];i++) act(&eny[stage][i]);
+//	printf("eny act over\n");
+	//small soldiers
+	//action over
+	//arrow move
+	arrow_move();
+	
+	//arrow move over
+	//damage calculate
+	d_cal(&player);
+	for (int i=0;i<frd_num;i++) d_cal(&frd[i]);
+	for (int i=0;i<est_num[stage];i++) d_cal(&eny[stage][i]);
+	//damage calculate over 
+}
+void act(man*p){
+	if (p->rl<=0) return;
+	if (p->ch!=you){
+		int assigned=0;
+		if (p->atting!=0) assigned=1;
+		weapon_consider(p);
+		for (int i=0;i<p->amn&&assigned==0;i++)
+			if (order3(p->amb[i],stage,p->ame[i]))
+				switch(p->am[i]){
+					case 0://protect a point
+							{
+//							printf("mode1\n");
+							int tox=p->amx[i];
+							int toy=p->amy[i];
+							if (danger(tox,toy,p->ch)){
+								if (dis2(p->x,p->y,tox,toy)>20000){
+									go_random(p,tox,toy,50);
+									assigned=1;
+									continue;
+									}
+							}
+							man* q=findEnemy(p);
+							if (q!=NULL&&q->rl>0&&dis2(q->x,q->y,p->x,p->y)>250000){
+								if (dis2(p->x,p->y,tox,toy)>90000) go_random(p,tox,toy,100);
+								assigned=1;
+							}
+//							printf("mode1 over\n");
+						break;}
+					case 1:
+						p->rl=0;
+						break;
+					case 2://attack friends
+							{
+//								printf("mode2\n");
+							int temp,min=INT_MAX;
+							man*q,*tempp=NULL;
+							for (int j=0;j<p->amatkn[i];j++){
+								q=&frd[p->amatk[i][j]];
+								if (q->rl<=0) continue;
+								temp=dis2(q->x,q->y,p->x,p->y);
+								if (temp<min){
+									tempp=q;
+									min=temp;
+								}
+							}
+							if (q->rl<=0||tempp==NULL) break;
+							int tox=tempp->x;
+							int toy=tempp->y;
+								//if ((entropy&0xf)==0)printf("%d\n",atkdis(p));
+								if (dis2(p->x,p->y,tox,toy)<(atkdis(p)+tempp->r)*(atkdis(p)+tempp->r)){
+									attackto(p,tox,toy);
+									assigned=1;
+								}
+								if (go_random(p,tox,toy,atkdis(p)+tempp->r)==1){
+									assigned=1;
+								}								
+							}
+//							printf("mode 2 over\n");
+						break;
+					case 3://attack one place 
+//							printf("mode 3 \n");
+							{int tox=p->amx[i];
+							int toy=p->amy[i];
+							if (tox==o[p->amatko[i]].l&&o[p->amatko[i]].ll<=0) continue;
+							else if (tox==o[p->amatko[i]].r&&o[p->amatko[i]].rl<=0) continue;
+							else if (toy==o[p->amatko[i]].u&&o[p->amatko[i]].ul<=0) continue;
+							else if (toy==o[p->amatko[i]].d&&o[p->amatko[i]].dl<=0) continue;
+							else {
+								if (dis2(p->x,p->y,tox,toy)<(atkdis(p))*(atkdis(p))){
+									attackto(p,tox,toy);
+									assigned=1;
+								}
+								else if (go_random(p,tox,toy,atkdis(p))==1){
+									assigned=1;
+								}
+								}
+							}
+//							printf("mode 3 over\n");
+						break;
+					case 4:
+						break;
+				}
+		if (assigned==0){
+			man* q=findEnemy(p); 
+			if (q){ 
+				int temp;
+				if ((temp=dis2(p->x,p->y,q->x,q->y))<(atkdis(p)+q->r)*(atkdis(p)+q->r))
+					attackto(p,q->x,q->y);
+				
+					if (!safeinbd(p)||p->wpr[1]<=0) go_random(p,q->x,q->y,atkdis(p)+q->r);
+					else if (safeinbd(p)) go_random(p,p->x,p->y,10);
+					else if (danger(p->x,p->y,p->ch)){
+						go_random(p,p->x,p->y,50);
+					}
+					else if (p->moving==0&&(entropy&7<2)){
+						go_random(p,p->x,p->y,100);
+					} 
+					
+			}
+		}
+	}
+	if (p->atting==0&&p->moving){
+		move(p);
+	}
+	if (p->atting){
+		if (p->weapon==0){
+			if (p->atting>=apfn[p->atkp[p->attpat]])
+			{
+				p->atting=0;
+				p->attlt=entropy;
+			}
+			else p->atting++;
+		}
+		else if (p->weapon==1){
+			if (p->atting==1){
+//				printf("%d %d\n",p->x,p->y);
+				new_arrow(p->x,p->y,p->r,p->atktox,p->atktoy,atk(p)/2,atkdis(p),p->lda_sp,p->ch);
+				p->wpr[1]--;
+				if (p->wpr[1]<=0) next_weapon(p);
+				}
+			if (p->atting>=p->atkint){
+				p->atting=0;
+			}
+			else p->atting++;
+		}
+	}
+}
+int atk(man*p){
+	int base=p->atk+p->wpma[p->weapon];
+	if (p->atting){
+		base+=p->atkma[p->attpat];
+	}
+	return base;
+}
+int go_random(man*p,int tox,int toy,int radium){
+	if (radium==0) {
+		return 0;
+//		printf("no\n");
+	}
+//	if ((temp1&7)==0)
+	{ 
+		int temp2=rand();
+		int temp3=rand();
+		int tx=tox+(temp2%(radium<<1))-radium;
+		int ty=toy+(temp3%(radium<<1))-radium;
+//		printf("%d %d %d %d\n",tx,ty,tox,toy);
+		if (minHamDis(p->ch,p->x,p->y,tx,ty)!=-1){
+			p->moving=1;
+			p->movetox=tx;
+			p->movetoy=ty;
+			return 1;
+		}
+		else return -1;
+	}
+	return 0;
+}
+int samesidemanbuilding(man*p,obstacle*x){
+	if ((p->ch==you||p->ch==friends)&&x->mode!=2) return 1;
+	if (p->ch==enemy&&x->mode!=1) return 1;
+	return 0;
+}
+int four(obstacle *b){
+	return (b->ul>0&&b->dl>0&&b->ll>0&&b->rl>0);
+}
+int safeinbd(man *p){
+	for (int i=0;i<o_num;i++){
+		if (inbd(p->x,p->y,&o[i])&&samesidemanbuilding(p,&o[i])&&four(&o[i])){
+			return 1;
+		}
+	}	
+	return 0;
+}
+void weapon_consider(man*p){
+	if (p->atting||p->rl<0) return;
+	for (int i=0;i<o_num;i++){
+		if (inbd(p->x,p->y,&o[i])){
+			if (p->weapon==0&&samesidemanbuilding(p,&o[i])&&four(&o[i])){
+				next_weapon(p);
+			}
+			return;
+		}
+	}
+	if (danger(p->x,p->y,p->ch)&&p->weapon!=0){
+		if (p->wpr[0]) p->weapon=0;
+	}
+} 
+
+int atkdis(man*p){
+	int dis=p->wpmr[p->weapon];
+	if (p->atting) dis+=p->atkmr[p->attpat];
+	if (p->weapon==1) return dis+p->lda_r;
+	if (p->weapon==0) return p->atk_r+dis;
+}
+void next_weapon(man *p){
+	if (p->atting==0)
+	do{
+		p->weapon=p->weapon==wp_number-1?0:p->weapon+1;
+	}while (p->wpr[p->weapon]<=0);
+	//printf("%d %d\n",p->weapon,p->wpr[p->weapon]);
+}
+void arrow_move(void){
+	for (int i=ar_hd;i!=ar_tl;i=(i==max_ar_num?0:i+1)){
+		if (arrow[i].cdt==flying){
+			int tox=arrow[i].x+cos(arrow[i].angle)*arr_length;
+			int toy=arrow[i].y+sin(arrow[i].angle)*arr_length;
+			if (arrow[i].ch==enemy){
+				for (int j=0;j<frd_num;j++){
+					if (frd[j].rl>0){
+						if (incircle(arrow[i].x,arrow[i].y,frd[j].x,frd[j].y,frd[j].r)||
+						incircle(tox,toy,frd[j].x,frd[j].y,frd[j].r)){
+							arrow[i].cdt=stop;
+							getDamage(&frd[i],arrow[i].atk);
+						}
+					}
+				}
+			}
+			else if (arrow[i].ch==you||arrow[i].ch==friends){
+				for (int j=0;j<est_num[stage];j++){
+					if (incircle(arrow[i].x,arrow[i].y,eny[stage][j].x,eny[stage][j].y,eny[stage][j].r)
+					||incircle(tox,toy,eny[stage][j].x,eny[stage][j].y,eny[stage][j].r)){
+					arrow[i].cdt=stop;
+					getDamage(&eny[stage][j],arrow[i].atk);						
+					}
+				}
+			}
+			arrow[i].x+=arrow[i].dx;
+			arrow[i].y+=arrow[i].dy;
+			arrow[i].restd-=arrow[i].sp;
+			if (arrow[i].restd<0) {
+				arrow[i].cdt=stop;
+			}
+		}
+	}
+	while (arrow[ar_hd].cdt==stop&&ar_hd!=ar_tl){
+		ar_hd=(ar_hd==max_ar_num?0:ar_hd+1);
+	}
+}
+void getDamage(man*p,int x){
+	if (p->rl<=x){
+		p->rl=0;
+	}
+	else p->rl-=x;
+}
+void draw(void){
+	left_bound=player.x-window_width/2;
+	up_bound=player.y-window_height/2;
+	if (left_bound<0) left_bound=0;
+	if (up_bound<0) up_bound=0;
+	if (left_bound+window_width>map_width) 
+		left_bound=map_width-window_width;
+	if (up_bound+window_height>map_height) 
+		up_bound=map_height-window_height;
+	right_bound=left_bound+window_width;
+	down_bound=up_bound+window_height;
+	beginPaint();
+	clearDevice();
+	draw_obstacle();
+	draw_friend();
+	draw_enemy();
+	draw_man(&player,&mycolor);
+	draw_arrow();
+	draw_block();
+	draw_condition_block();
+	endPaint();
+}
+void draw_arrow(void){
+	int x,y;
+	for (int i=ar_hd;i!=ar_tl;i=(i==max_ar_num?0:i+1)){
+		if (arrow[i].cdt==flying){
+			x=arrow[i].x-left_bound;
+			y=arrow[i].y-up_bound;
+			if (x<0||x>window_width||y<0||y>window_height) continue;
+			setPenWidth(2);
+			setPenColor(BLACK);
+//			printf("%d %d %d %f\n",i,x,y,arrow[i].angle);
+			line(x,y,x+arr_length*cos(arrow[i].angle),y+arr_length*sin(arrow[i].angle));
+		}
+	}
+}
+double vector_angle(int x,int y){
+	if (x==0&&y==0) {	
+						return 0;
+					}
+	if (x==0) 
+	{
+		return (y>0?pi/2:-pi/2);
+	}
+	double angle=atan(y/(double)x);
+	{	
+		return (x>0?angle:angle+pi);
+	}
+}
+void draw_set_man(mds*c){
+	setPenColor(c->pc);
+	setBrushColor(c->bc);
+	setTextColor(c->tc);
+	setTextSize(c->ts);
+	setTextBkColor(c->tbkc);
+	setPenWidth(c->pw);
+}
+void draw_man(man*p,mds *c)
+{
+	if (p->rl<=0) return;
+	int r=p->r;
+	int x=p->x;
+	int y=p->y;
+	if (x+r<left_bound||x-r>right_bound||y-r>down_bound||y+r<up_bound) return;
+	draw_set_man(c);
+	ellipse(x-r-left_bound,y-r-up_bound,x+r-left_bound,y+r-up_bound);
+	paintText(x-c->ts/2-left_bound,y-c->ts/2-up_bound,p->name);
+	draw_life_bar(p->x,p->y-p->r-10,p->rl,p->fl);
+	//draw attack
+	if (p->atting){
+		if (p->weapon==0){
+			int pat=p->atkp[p->attpat];
+			switch (p->ch){
+				case you:setPenColor(GREEN);
+					break;
+				case friends:setPenColor(BLUE);
+					break;
+				case enemy:setPenColor(RED);
+					break;
+			}
+			switch(pat){
+				case 0: {double a1=vector_angle(p->atktox-x,p->atktoy-y);
+						a1+=pi/180*p->atkag[p->attpat]*(0.5-(p->atting-1)/(double)(apfn[pat]-1));
+						int tox=x+cos(a1)*atkdis(p);
+						int toy=y+sin(a1)*atkdis(p);
+						setPenWidth(10);
+						line(x-left_bound,y-up_bound,tox-left_bound,toy-up_bound);
+						}
+						break;
+				case 1:{double a1=vector_angle(p->atktox-x,p->atktoy-y);
+						a1-=pi/180*p->atkag[p->attpat]*(0.5-(p->atting-1)/(double)(apfn[pat]-1));
+						int tox=x+cos(a1)*atkdis(p);
+						int toy=y+sin(a1)*atkdis(p);
+						setPenWidth(10);
+						line(x-left_bound,y-up_bound,tox-left_bound,toy-up_bound);}
+						break;
+				case 2:{int tl=atkdis(p)-p->r;
+						double a1=vector_angle(p->atktox-x,p->atktoy-y);
+						int len=r+tl/(double)apfn[pat]*p->atting;
+						int tox=x+cos(a1)*len;
+						int toy=y+sin(a1)*len;	
+						setPenWidth(10);
+						line(x-left_bound,y-up_bound,tox-left_bound,toy-up_bound);
+						x=tox+cos(a1+5*pi/6)*20;
+						y=toy+sin(a1+5*pi/6)*20;
+						line(tox-left_bound,toy-up_bound,x-left_bound,y-up_bound);
+						x=tox+cos(a1-5*pi/6)*20;
+						y=toy+sin(a1-5*pi/6)*20;
+						line(tox-left_bound,toy-up_bound,x-left_bound,y-up_bound);
+					break;//0.5 yuan special effect 
+				}
+				case 3:{double a1=vector_angle(p->atktox-x,p->atktoy-y);
+						a1-=2*pi*(0.5-(p->atting-1)/(double)(apfn[pat]-1));
+						int tox=x+cos(a1)*atkdis(p);
+						int toy=y+sin(a1)*atkdis(p);
+						setPenWidth(10);
+						line(x-left_bound,y-up_bound,tox-left_bound,toy-up_bound);
+					break;
+				}
+				} //end switch
+		}//short distance attack draw over
+		else if (p->weapon==1){//draw bow/ache 
+//			int dx=p->atktox-p->x;
+//			int dy=p->atktoy-p->y;
+//			if (dx<=0&&dy<=0) {
+//				int left=p->x-p->r-left_bound;
+//				int right=left+p->r<<1;
+//				int up=p->y-p->r-30-up_bound;
+//				int down=up+2*p->r+60;
+//				setPenWidth(10);
+//				arc(left,up,right,down,p->x-left_bound,up,left,p->y-up_bound);
+//		}
+				}
+	}
+}
+void draw_block(void){
+	setPenWidth(2);
+	setPenColor(BLACK);
+	for (int i=0;i<hor;i++)
+	{
+		_line(0,my[i],map_width,my[i]);
+		}	
+	for (int i=0;i<ver;i++)
+	{
+		_line(mx[i],0,mx[i],map_height);
+		}
+}
+void draw_obstacle(void)
+{
+	for (int i=0;i<o_num;i++)
+	{
+		setPenWidth(10);
+		setPenColor(BLACK);
+		_line((o[i].l+o[i].r)/2-o[i].ful/10,o[i].u,(o[i].l+o[i].r)/2+o[i].ful/10,o[i].u);
+		_line((o[i].l+o[i].r)/2-o[i].fdl/10,o[i].d,(o[i].l+o[i].r)/2+o[i].fdl/10,o[i].d);
+		_line(o[i].l,(o[i].u+o[i].d)/2-o[i].fll/10,o[i].l,(o[i].d+o[i].u)/2+o[i].fll/10);
+		_line(o[i].r,(o[i].u+o[i].d)/2-o[i].frl/10,o[i].r,(o[i].d+o[i].u)/2+o[i].frl/10);
+		setPenWidth(2);
+		setBrushColor(RGB(o[i].R,o[i].G,o[i].B));
+		rectangle(o[i].l-left_bound,o[i].u-up_bound,o[i].r-left_bound,o[i].d-up_bound);
+		if (o[i].mode<=2){
+			if (o[i].mode==1) setBrushColor(GREEN);
+			else setBrushColor(RED);
+		draw_life_bar((o[i].l+o[i].r)/2,o[i].u+10,o[i].ul,o[i].ful);
+		draw_life_bar((o[i].l+o[i].r)/2,o[i].d-20,o[i].dl,o[i].fdl);
+		draw_life_bar(o[i].l,(o[i].u+o[i].d)/2,o[i].ll,o[i].fll);
+		draw_life_bar(o[i].r,(o[i].d+o[i].u)/2,o[i].rl,o[i].frl);
+		}
+	}
+}
+void _line(int x,int y,int tox,int toy){
+	line(x-left_bound,y-up_bound,tox-left_bound,toy-up_bound);
+}
+void draw_friend(void){
+	for (int i=0;i<frd_num;i++){
+		draw_man(&frd[i],&frdcolor);
+	}
+}
+void draw_enemy(void){
+	for (int i=0;i<est_num[stage];i++){
+		draw_man(&eny[stage][i],&enycolor);
+	}
+}
+void draw_life_bar(int x,int y,int rest_life,int full_life){
+	if (full_life==0) return;
+	if (rest_life>full_life) rest_life=full_life;
+	if (rest_life<0) rest_life=0;
+	int length=30+(full_life-100)/20;
+	if (length>300){
+		length=300;
+	}
+	int left=x-length/2-left_bound;
+	if (left>=0&&left<=window_width&&y>=up_bound&&y<=down_bound)
+	rectangle(left,y-up_bound,x+(rest_life/(double)full_life-0.5)*length-left_bound,y+5-up_bound);
+}
+void draw_condition_block(void){
+	setBrushColor(WHITE);
+	if (player.fl/player.rl>10)setPenColor(RED);
+	else setPenColor(BLACK);
+	setPenWidth(2);
+	rectangle(0,window_height,window_width,window_height+add_height);
+	setTextBkColor(WHITE);
+	setTextColor(BLACK);
+	setTextSize(30);
+	paintText(window_width-200,window_height+20,val_to_string(now-start));
+	rectangle(0,window_height,add_height,window_height+add_height);
+	int left=left_bound/(double)map_width*add_height;
+	int up=up_bound/(double)map_height*add_height;
+	int right=right_bound/(double)map_width*add_height;
+	int down=down_bound/(double)map_height*add_height;
+	rectangle(left,window_height+up,right,window_height+down);
+	paintText(add_height+20,window_height+20,val_to_string(player.x));
+	paintText(add_height+20,window_height+60,val_to_string(player.y));
+	//player x y
+//	setTextSize(20);
+//	paintText("")
+	//message
+}
+char *val_to_string(int points)
+{
+	int len=0;
+	int flag=0;
+	char *temp=malloc(20),*s=malloc(20);
+	if (points<0)
+	{
+		flag=-1;
+		points=-points;
+	}
+	while (points)
+	{
+		temp[len++]=points%10+48;
+		points/=10;
+	}
+	if (flag==-1) temp[len++]='-';
+	for (int i=0;i<len;i++)
+	s[i]=temp[len-i-1];
+	if (len==0) s[len++]='0';
+	s[len]=0;
+	return s;
+}
+void beginChapter(int bc){
+	chapter=bc;
+	int a,b,c,d;
+	FILE* fp=fopen("set.txt","r");
+	do{
+	fscanf(fp,"%*[^C]Chapter %d",&c);
+	} while (c-1<bc);
+	fscanf(fp,"%*[^:]:%d",&map_width);
+	fscanf(fp,"%*[^:]:%d",&map_height);
+	fscanf(fp,"%*[^:]:%d",&initial_posx);
+	fscanf(fp,"%*[^:]:%d",&initial_posy);
+	fscanf(fp,"%*[^:]:%d",&frd_num);
+	for (int i=0;i<frd_num;i++)
+	{
+		get_man_info(&frd[i],fp,friends);
+		frd[i].ch=friends;
+		frd[i].cam=0;
+	}
+	fscanf(fp,"%*[^:]:%d",&o_num);
+	for (int i=0;i<o_num;i++)
+	{
+		fscanf(fp,"%*[^:]:(%d,%d)-(%d,%d)",&o[i].u,&o[i].l,&o[i].d,&o[i].r);
+		fscanf(fp,"%*[^:]:%d",&o[i].mode);
+		if (o[i].mode<=2) fscanf(fp,"%*[^:]:%d %d %d %d",&o[i].ful,&o[i].fll,&o[i].fdl,&o[i].frl);
+		o[i].ul=o[i].ful;o[i].ll=o[i].fll;o[i].dl=o[i].fdl;o[i].rl=o[i].frl;
+		fscanf(fp,"%*[^R]RGB(%d,%d,%d)",&o[i].R,&o[i].G,&o[i].B);
+	}
+	fscanf(fp,"%*[^:]:%d",&enyst_num);
+	for (int i=0;i<enyst_num;i++){
+		fscanf(fp,"%*[^:]:%d",&est_num[i]);
+		for (int j=0;j<est_num[i];j++){
+			get_man_info(&eny[i][j],fp,enemy);
+			eny[i][j].ch=enemy;
+			eny[i][j].cam=0;
+			eny[i][j].attlt=-1;
+		}
+	}
+	fclose(fp);
+	stage=0;
+	player.x=initial_posx;
+	player.y=initial_posy;
+	player.moving=0;
+	player.atting=0;
+	ar_hd=ar_tl=0;
+	map_cut();
+	for (int i=0;i<hor-1;i++){
+		ctx[i]=(mx[i]+mx[i+1])>>1;
+	}	
+	for (int i=0;i<ver-1;i++){
+		cty[i]=(my[i]+my[i+1])>>1;
+	}
+	entropy=0;
+	for (int i=0;i<ver;i++) {
+		for (int j=0;j<hor;j++) visited[i][j]=0;
+	}
+	for (int i=0;i<ver;i++){
+		for (int j=0;j<hor;j++){
+			for (int d=0;d<4;d++)
+			for (int ch=0;ch<4;ch++)
+			go[i][j][d][ch]=0;
+		}
+	}
+	printf("load successfully/n");
+}
+void endChapter(int ec){
+}
+void new_arrow(int x,int y,int r,int tox,int toy,int atk,int dis,int sp,character ch){
+		single_arrow*p=&arrow[ar_tl];
+		p->atk=atk;
+		p->restd=dis;
+		p->angle=vector_angle(tox-x,toy-y);
+		p->dx=arr_length*cos(p->angle);
+		p->dy=arr_length*sin(p->angle);
+		p->sp=sp;
+		p->x=x+r*cos(p->angle);
+		p->y=y+r*sin(p->angle);
+		p->cdt=flying;
+		p->ch=ch;
+		if (ar_tl==max_ar_num) ar_tl=0;
+		else ar_tl++;
+//		printf("%d %d %d\n",p->sp,p->dx,p->dy);
+}
+man* findEnemy(man*p){
+	man* minp=NULL;
+	int dis=INT_MAX;
+	int temp;
+	if (p->ch==friends||p->ch==you){
+		for (int i=0;i<est_num[stage];i++){
+			if (eny[stage][i].rl>0)
+			if (dis>(temp=dis2(p->x,p->y,eny[stage][i].x,eny[stage][i].y))){
+				dis=temp;
+				minp=&eny[stage][i];
+			}
+		}
+	}
+	else if (p->ch==enemy){
+		dis=dis2(player.x,player.y,p->x,p->y);
+		minp=&player;
+		for (int i=0;i<frd_num;i++){
+			if (frd[i].rl>0&&((temp=dis2(frd[i].x,frd[i].y,p->x,p->y))<dis)){
+				dis=temp;
+				minp=&frd[i];
+			}
+		}
+	} 
+	return minp;
+}
+void map_cut(void){
+	hor=ver=2;
+	mx[0]=my[0]=0;
+	mx[1]=map_width;
+	my[1]=map_height;
+	for (int i=0;i<o_num;i++){
+		if (o[i].mode<=2){
+			int cx=(o[i].l+o[i].r)/2;
+			int cy=(o[i].u+o[i].d)/2;
+			ver=order_insert(o[i].l,mx,ver);
+			ver=order_insert(cx-o[i].ful/10,mx,ver);
+			ver=order_insert(cx+o[i].ful/10,mx,ver);
+			ver=order_insert(cx-o[i].fdl/10,mx,ver);
+			ver=order_insert(cx+o[i].fdl/10,mx,ver);
+			ver=order_insert(o[i].r,mx,ver);
+			hor=order_insert(o[i].u,my,hor);
+			hor=order_insert(cy-o[i].fll/10,my,hor);
+			hor=order_insert(cy+o[i].fll/10,my,hor);
+			hor=order_insert(cy-o[i].frl/10,my,hor);
+			hor=order_insert(cy+o[i].frl/10,my,hor);
+			hor=order_insert(o[i].d,my,hor);
+		}
+	}
+}
+int order_insert(int x,int a[],int n){
+	int i;
+	for (i=0;i<n;i++)
+	if (a[i]==x) return n;
+	for (i=n-1;a[i]>x;a[i+1]=a[i],i--);
+	a[i+1]=x;
+	return n+1;
+}
+int out_of_map(int x,int y){
+	return (x<=0||x>=map_width||y<=0||y>=map_height);
+}
+int minHamDis(character ch,int x,int y,int tox,int toy)//min hamilton distance 
+{
+	if (out_of_map(x,y)||out_of_map(tox,toy)) return -1; 
+	int stx,sty,edx,edy;
+	stx=findmx(x);
+	sty=findmy(y);
+	edx=findmx(tox);
+	edy=findmy(toy);
+	heap[1].x=stx;
+	heap[1].y=sty;
+	visited[stx][sty]=++angry;
+	heap[1].d=0;
+	num=1;
+	int d,l=dis2(ctx[stx],cty[sty],ctx[edx],cty[edy]);
+	if (l==0) return -1;
+//	printf("%d %d\n",ctx[stx],cty[sty]);
+//	printf("%d %d\n",ctx[edx],cty[edy]);
+//	printf("st:%d %d\n",stx,sty);
+//	printf("ed:%d %d\n",edx,edy);
+	while (num>0){
+		x=heap[1].x;
+		y=heap[1].y;
+		d=heap[1].d;
+//		if (num>10) break;
+//		printf("%d\n",num);
+//		for (int i=1;i<=num;i++){
+//			printf("x=%d y=%d d=%d l=%d ctx%d cty%d\n",heap[i].x,heap[i].y,heap[i].d,heap[i].l,ctx[heap[i].x],cty[heap[i].y]);
+//		}
+		delete_root();
+		for (int dr=0;dr<4;dr++){
+			tox=x+_dx[dr];
+			toy=y+_dy[dr];
+			if (tox>=0&&tox<ver&&toy>=0&&toy<hor)
+			if (visited[tox][toy]!=angry&&algo(ch,ctx[x],cty[y],ctx[tox],cty[toy])){
+				l=dis2(ctx[tox],cty[toy],ctx[edx],cty[edy]);
+				if (l==0) return dr;
+				add_to_heap(tox,toy,int_abs(ctx[x]-ctx[tox])+int_abs(cty[y]-cty[toy])+d,l);
+				visited[tox][toy]=angry;
+//				printf("%d %d\n",tox,toy);
+			}
+//		for (int i=1;i<=(num>>1);i++){
+//			if (heap[i].d>heap[i<<1].d||heap[i].d>heap[i<<1+1].d&&i<<1+1<=num)
+//			printf("no\n");			
+//		}
+		}
+	}
+	return -1;
+}
+int int_abs(int x){
+	return x<0?-x:x;
+}
+void add_to_heap(int x,int y,int d,int l){
+	int i=++num;
+	int j;
+	while ((j=(i>>1))>0&&d<heap[j].d||d==heap[j].d&&l<heap[j].l){
+		heap[i]=heap[j];
+		i=j;
+	}
+	heap[i].x=x;
+	heap[i].y=y;
+	heap[i].l=l;
+	heap[i].d=d;
+}
+void swap_heap_element(heap_element *a,heap_element *b){
+	heap_element temp=*a;
+	*a=*b;
+	*b=temp;
+}
+void delete_root(void){
+//	if (num==0) return;
+	int i=1,j;
+	swap_heap_element(&heap[1],&heap[num]);
+	heap[num--].d=INT_MAX;
+	while ((j=(i<<1))<=num){
+		if (heSmall(j,j+1)&&heSmall(j,i)){
+			swap_heap_element(&heap[i],&heap[j]);
+			i=j;
+		}
+		else if (heSmall(j+1,j)&&heSmall(j+1,i)){
+			swap_heap_element(&heap[i],&heap[j+1]);
+			i=j+1;
+		}
+		else return;
+	}
+}
+int heSmall(int i,int j){
+	return (heap[i].d<heap[j].d||heap[i].d==heap[j].d&&heap[i].l<heap[j].l||
+	heap[i].d==heap[j].d&&heap[i].l==heap[j].l&&i<j);
+}
+void d_cal(man *p){
+	if (p->atting==0||p->rl<0) return;
+	if (p->ch==you||p->ch==friends){
+		if (p->weapon==0){
+			int x=p->x;
+			int y=p->y;
+			int r=p->r;
+			int pat=p->atkp[p->attpat];
+			switch(pat){
+				case 0: {double a1=vector_angle(p->atktox-x,p->atktoy-y);
+						a1+=pi/180*p->atkag[p->attpat]*(0.5-(p->atting-1)/(double)(apfn[pat]-1));
+						int tox=x+cos(a1)*atkdis(p);
+						int toy=y+sin(a1)*atkdis(p);
+						for (int i=0;i<est_num[stage];i++)
+							{
+								man*q=&eny[stage][i];
+								if (q->rl<=0) continue;
+								if (p->damaged[stage][i]!=p->attlt)
+								if (incircle(x,y,q->x,q->y,q->r)||incircle(tox,toy,q->x,q->y,q->r)
+								||incircle(((x+tox)>>1),((y+toy)>>1),q->x,q->y,q->r)){
+									p->damaged[stage][i]=p->attlt;
+									touch(p,q);
+								}
+							}
+						}
+						break;
+				case 1:{double a1=vector_angle(p->atktox-x,p->atktoy-y);
+						a1-=pi/180*p->atkag[p->attpat]*(0.5-(p->atting-1)/(double)(apfn[pat]-1));
+						int tox=x+cos(a1)*atkdis(p);
+						int toy=y+sin(a1)*atkdis(p);
+						for (int i=0;i<est_num[stage];i++)
+							{
+								man*q=&eny[stage][i];
+								if (q->rl<=0) continue;
+								if (p->damaged[stage][i]!=p->attlt)
+								if (incircle(x,y,q->x,q->y,q->r)||incircle(tox,toy,q->x,q->y,q->r)
+								||incircle(((x+tox)>>1),((y+toy)>>1),q->x,q->y,q->r)){
+									p->damaged[stage][i]=p->attlt;
+									touch(p,q);
+								}
+							}
+						break;}
+				case 2:{int tl=atkdis(p)-r;
+						double a1=vector_angle(p->atktox-x,p->atktoy-y);
+						int len=r+tl/(double)apfn[pat]*p->atting;
+						int tox=x+cos(a1)*len;
+						int toy=y+sin(a1)*len;
+						for (int i=0;i<est_num[stage];i++)
+							{
+								man*q=&eny[stage][i];
+								if (q->rl<=0) continue;
+								if (p->damaged[stage][i]!=p->attlt)
+								if (incircle(x,y,q->x,q->y,q->r)||incircle(tox,toy,q->x,q->y,q->r)
+								||incircle(((x+tox)>>1),((y+toy)>>1),q->x,q->y,q->r)){
+									p->damaged[stage][i]=p->attlt;
+									touch(p,q);
+									back(p,q,p->atkdis[p->attpat]);
+								}
+							}
+					break;
+				}
+				case 3:{double a1=vector_angle(p->atktox-x,p->atktoy-y);
+						a1-=2*pi*(0.5-(p->atting-1)/(double)(apfn[pat]-1));
+						int tox=x+cos(a1)*atkdis(p);
+						int toy=y+sin(a1)*atkdis(p);
+						for (int i=0;i<est_num[stage];i++)
+							{
+								man*q=&eny[stage][i];
+								if (q->rl<=0) continue;
+								if (p->damaged[stage][i]!=p->attlt)
+								if (incircle(x,y,q->x,q->y,q->r)||incircle(tox,toy,q->x,q->y,q->r)
+								||incircle(((x+tox)>>1),((y+toy)>>1),q->x,q->y,q->r)){
+									p->damaged[stage][i]=p->attlt;
+									touch(p,q);
+									back(p,q,p->atkdis[p->attpat]);
+								}
+							}
+					break;
+				}
+			}		//end switch short dis damage calculate 
+		}//end if weapon==0
+	}//end if p->ch==you||frd
+	else if (p->ch==enemy){
+		if (p->weapon==0){
+			int x=p->x;
+			int y=p->y;
+			int r=p->r;
+			int pat=p->atkp[p->attpat];
+			switch(pat){
+				case 0: {double a1=vector_angle(p->atktox-x,p->atktoy-y);
+						a1+=pi/180*p->atkag[p->attpat]*(0.5-(p->atting-1)/(double)(apfn[pat]-1));
+						int tox=x+cos(a1)*atkdis(p);
+						int toy=y+sin(a1)*atkdis(p);
+						for (int i=0;i<frd_num;i++)
+							{
+								man*q=&frd[i];
+								if (q->rl<=0) continue;
+								if (p->damaged[stage][i]!=p->attlt)
+								if (incircle(x,y,q->x,q->y,q->r)||incircle(tox,toy,q->x,q->y,q->r)
+								||incircle(((x+tox)>>1),((y+toy)>>1),q->x,q->y,q->r)){
+									p->damaged[stage][i]=p->attlt;
+									touch(p,q);
+								}
+							}
+						}
+						break;
+				case 1:{double a1=vector_angle(p->atktox-x,p->atktoy-y);
+						a1-=pi/180*p->atkag[p->attpat]*(0.5-(p->atting-1)/(double)(apfn[pat]-1));
+						int tox=x+cos(a1)*atkdis(p);
+						int toy=y+sin(a1)*atkdis(p);
+						for (int i=0;i<frd_num;i++)
+							{
+								man*q=&frd[i];
+								if (q->rl<=0) continue;
+								if (p->damaged[stage][i]!=p->attlt)
+								if (incircle(x,y,q->x,q->y,q->r)||incircle(tox,toy,q->x,q->y,q->r)
+								||incircle(((x+tox)>>1),((y+toy)>>1),q->x,q->y,q->r)){
+									p->damaged[stage][i]=p->attlt;
+									touch(p,q);
+								}
+							}
+						break;}
+				case 2:{int tl=atkdis(p)-r;
+						double a1=vector_angle(p->atktox-x,p->atktoy-y);
+						int len=r+tl/(double)apfn[pat]*p->atting;
+						int tox=x+cos(a1)*len;
+						int toy=y+sin(a1)*len;
+						for (int i=0;i<frd_num;i++)
+							{
+								man*q=&frd[i];
+								if (q->rl<=0) continue;
+								if (p->damaged[stage][i]!=p->attlt)
+								if (incircle(x,y,q->x,q->y,q->r)||incircle(tox,toy,q->x,q->y,q->r)
+								||incircle(((x+tox)>>1),((y+toy)>>1),q->x,q->y,q->r)){
+									p->damaged[stage][i]=p->attlt;
+									touch(p,q);
+									back(p,q,p->atkdis[p->attpat]);
+								}
+							}
+					break;
+				}
+				case 3:{double a1=vector_angle(p->atktox-x,p->atktoy-y);
+						a1-=2*pi*(0.5-(p->atting-1)/(double)(apfn[pat]-1));
+						int tox=x+cos(a1)*atkdis(p);
+						int toy=y+sin(a1)*atkdis(p);
+						for (int i=0;i<frd_num;i++)
+							{
+								man*q=&frd[i];
+								if (q->rl<=0) continue;
+								if (p->damaged[stage][i]!=p->attlt)
+								if (incircle(x,y,q->x,q->y,q->r)||incircle(tox,toy,q->x,q->y,q->r)
+								||incircle(((x+tox)>>1),((y+toy)>>1),q->x,q->y,q->r)){
+									p->damaged[stage][i]=p->attlt;
+									touch(p,q);
+									back(p,q,p->atkdis[p->attpat]);
+								}
+							}
+					break;
+				}
+			}		//end switch short dis damage calculate 
+		}//end if weapon==0
+	}
+}
+int incircle(int x,int y,int cx,int cy,int r){
+//	printf("%d %d %d %d %d\n",x,y,cx,cy,r);
+	return (dis2(x,y,cx,cy)<r*r); 
+}
+void touch(man *p,man *q){
+	int real_dmg=atk(p)-q->def;
+	if (real_dmg<0) real_dmg=1+entropy&1;
+	if (q->rl<=real_dmg){
+		q->rl=0;
+		pkillq(p,q);
+	}
+	else q->rl-=real_dmg;
+	char s[30];
+	printf("%s loses %d hp\n",q->name,real_dmg);
+//	new_massage(s); 
+}
+void pkillq(man*p,man *q){
+}
+int back(man *p,man *q,int dis){
+	int dx=q->x-p->x;
+	int dy=q->y-p->y;
+	double mo=sqrt(dx*dx+dy*dy);
+	if (mo<0.1) {
+		dx=0;
+		dy=1;
+		mo=1;
+	}
+	int i,t=0,l;
+	for (i=1;i<=10;i++){
+		l=i*dis/10;
+		if (!algo(q->ch,q->x+dx/mo*t,q->y+dy/mo*t,q->x+dx/mo*l,q->y+dy/mo*l)) break;
+		t=l;
+	}
+	q->x+=dx/mo*t;
+	q->y+=dy/mo*t;
+	return t;
+}

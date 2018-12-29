@@ -1,0 +1,2 @@
+released at 2016.1.26
+updated at 2016.1.28:修正分数统计,添加retry功能
